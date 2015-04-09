@@ -1,0 +1,59 @@
+@import "font-awesome/less/variables";
+
+@fa-font-path: "../assets";
+@import "font-awesome/less/mixins";
+@import "font-awesome/less/path";
+@import "font-awesome/less/core";
+@import "font-awesome/less/larger";
+@import "font-awesome/less/fixed-width";
+@import "font-awesome/less/list";
+@import "font-awesome/less/bordered-pulled";
+@import "font-awesome/less/animated";
+@import "font-awesome/less/rotated-flipped";
+@import "font-awesome/less/stacked";
+@import "font-awesome/less/icons";
+
+@import "bootstrap/less/variables";
+@import "bootstrap/less/mixins";
+@import "bootstrap/less/normalize";
+@import "bootstrap/less/scaffolding";
+@import "bootstrap/less/type";
+
+@import "buttons";
+@import "forms";
+@import "prototyping";
+
+@import "components/artwork";
+@import "components/filter-group";
+@import "components/list";
+@import "components/virtual-list";
+@import "components/range";
+@import "components/spinner";
+@import "components/tag";
+@import "components/toolbar";
+
+body {
+  height: 100vh;
+}
+
+@media screen and (max-width: @screen-xs-max) {
+  body {
+    width: 200vw;
+  }
+}
+
+body, #root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+* {
+  user-select: none;
+
+  &:focus {
+    outline-color: transparent;
+    outline-style: none;
+    outline: none;
+  }
+}
