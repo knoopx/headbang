@@ -6,9 +6,6 @@ module.exports = React.createClass
   getDefaultProps: ->
     display: "flex"
     flex: 1
-    overflow: "initial"
-    alignItems: "initial"
-    alignSelf: "initial"
 
   getStyle: ->
     display: @props.display
@@ -18,9 +15,10 @@ module.exports = React.createClass
     overflow: @props.overflow
     textOverflow: "ellipsis"
     whiteSpace: "nowrap"
+    padding: @props.padding
     alignItems: @props.alignItems
     alignSelf: @props.alignSelf
     minWidth: 0
 
   render: ->
-    <div className="column" style={@getStyle()} {...@props}>{@props.children}</div>
+    <div className="column" {...@props} style={Object.merge(@getStyle(), @props.style)}/>

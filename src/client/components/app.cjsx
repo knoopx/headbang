@@ -1,11 +1,11 @@
 React = require("react")
 Combokeys = require('combokeys')
+io = require("socket.io-client")()
 
-AlbumStore = require("../album-store")
-TrackStore = require("../track-store")
-JobStore = require("../job-store")
-filter = require("../filter")
-{io} = require("../events")
+AlbumStore = require("../store/album-store")
+TrackStore = require("../store/track-store")
+JobStore = require("../store/job-store")
+filter = require("../support/filter")
 
 {Column, Row, Gutter, Divider} = require("./layout")
 AlbumList = require("./album-list")
@@ -43,7 +43,7 @@ module.exports = React.createClass
   getDefaultProps: ->
     orderFn:
       ascending: (album) -> [album.artistName?.sort().join().toLocaleLowerCase(), album.year, album.name.toLocaleLowerCase(), album.id]
-      recent: (album) -> -album.indexedAt
+      recent: (album) -> -Date.parse(album.indexedAt)
 
   getInitialState: ->
     if window.previousState?
@@ -59,6 +59,10 @@ module.exports = React.createClass
       filter: @restoreFilter()
       activePlaylistItem: playlist[playlistIndex]
 
+  componentWillMount: ->
+    io.on "connect", @handleConnect
+    io.on "disconnect", @handleDisconnect
+
   componentDidMount: ->
     module.onReload? =>
       window.previousState = @state
@@ -69,22 +73,17 @@ module.exports = React.createClass
         @refs.filter.focus()
         e.preventDefault()
 
-    io.on "connect", @handleConnect
-    io.on "disconnect", @handleDisconnect
-
   componentWillUnmount: ->
     @combokeys?.detach()
     AlbumStore.off "change", @reloadAlbums
     JobStore.off "change", @reloadJobs
-    io.off "connect", @handleConnect
-    io.off "disconnect", @handleDisconnect
 
   render: ->
     if @state.isConnected
       <Column>
         <Row className="toolbar" flex="initial">
           <Row alignItems="center">
-            <Column className="wrapper">
+            <Column padding="10px">
               <FilterGroup ref="filter" filter={@state.filter} albums={@state.albums} onChange={@handleFilterChange} />
             </Column>
           </Row>
@@ -122,6 +121,11 @@ module.exports = React.createClass
       </Row>
 
   handleConnect: ->
+    io.on "inject:album", @handleAlbumInjected
+    io.on "eject:album", @handleAlbumEjected
+    io.on "inject:job", @handleJobInjected
+    io.on "eject:job", @handleJobEjected
+
     AlbumStore.fetch().then =>
       @reloadAlbums()
       AlbumStore.on "change", @reloadAlbums
@@ -132,10 +136,24 @@ module.exports = React.createClass
 
     @setState isConnected: true, => @refs.filter.focus()
 
+  handleAlbumInjected: (album) ->
+    AlbumStore.inject(album)
+
+  handleAlbumEjected: (album) ->
+    AlbumStore.eject(album)
+
+  handleJobInjected: (job) ->
+    JobStore.inject(job)
+
+  handleJobEjected: (job) ->
+    JobStore.eject(job)
+
   handleDisconnect: ->
-    @setState isConnected: false, =>
-      AlbumStore.ejectAll()
-      JobStore.ejectAll()
+    io.off "inject:album", @handleAlbumInjected
+    io.off "eject:album", @handleAlbumEjected
+    io.off "inject:job", @handleJobInjected
+    io.off "eject:job", @handleJobEjected
+    @setState isConnected: false
 
   handleFilterChange: (filter) ->
     @setItem("filter:starred", filter.starred)

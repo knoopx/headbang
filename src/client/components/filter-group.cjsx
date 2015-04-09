@@ -2,8 +2,8 @@ React = require("react")
 Immutable = require("immutable")
 levenshtein = require('fast-levenshtein')
 
-AlbumStore = require("../album-store")
-filter = require("../filter")
+AlbumStore = require("../store/album-store")
+filter = require("../support/filter")
 
 {Column, Row, Gutter, Divider} = require("./layout")
 Spinner = require("./spinner")
@@ -102,7 +102,7 @@ module.exports = React.createClass
     albums.forEach (album) ->
       types.map (type) ->
         for value in album[type] || []
-          suggestions[type] = suggestions[type].add(value)
+          suggestions[type] = suggestions[type].add(value.toLocaleLowerCase())
 
     list = Object.keys(suggestions).map (type) ->
       suggestions[type].toArray().map (value) ->
@@ -158,7 +158,7 @@ module.exports = React.createClass
             @suggestTimeout = null
         else
           @setState(isLoading: false)
-      , 1000
+      , 500
 
   handleStarredClick: ->
     @notifyChange(starred: if @state.starred then null else true)

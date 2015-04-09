@@ -12,7 +12,7 @@ Album = require("./../server/model/album")
 AlbumStore = require("./../server/store/album-store")
 
 module.exports = commander
-.version(require("../version"))
+.version(require("../../package").version)
 .option('-f, --force', 'force metadata reload')
 .option('--last-fm <key>', 'last.fm api key')
 .option('-p, --port <n>', 'port number', parseInt, 3366)
@@ -30,6 +30,8 @@ module.exports = commander
         queue.push (next) ->
           Indexer.index(path, files, commander.force).then (album) ->
             lastfm?.lookup(album).then (attrs) ->
+              ["year", "genre", "tag"].each (attr) ->
+                attrs[attr] = attrs[attr].concat(album[attr]).compact().unique()
               AlbumStore.inject(Object.merge(album, attrs))
             next()
 

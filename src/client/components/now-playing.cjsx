@@ -8,7 +8,7 @@ module.exports = React.createClass
   propTypes:
     item: React.PropTypes.object.isRequired
   render: ->
-    <Row className="wrapper">
+    <Row padding="10px">
       <Column flex="initial"><Artwork src={@props.item.album.artwork} /></Column>
       <Gutter/>
       <Column>

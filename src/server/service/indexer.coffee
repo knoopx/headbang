@@ -34,19 +34,17 @@ module.exports =
 
       readID3(files.sort()).then (id3) ->
         albumName = id3.map("album").unique().first()
-        artistName = id3.map("albumartist").flatten().unique()
-        artistName = id3.map("artist").flatten().unique() unless artistName.length > 0
 
         album = Album.build Object.merge prevAlbum,
           id: MD5.hex_md5(path).to(10)
           name: AlbumName.strip(albumName)
-          artistName: artistName
+          artistName: id3.map("artist").flatten().unique()
           genre: Genre.match(id3.map("genre").flatten().unique())
           tag: AlbumName.tags(basename)
           year: id3.map("year").flatten().unique()
           basename: basename
           path: path
-          indexedAt: stat.birthtime | stat.ctime
+          indexedAt: stat.birthtime || stat.ctime
 
         for file, index in files.sort()
           basename = Path.basename(file)
@@ -56,7 +54,7 @@ module.exports =
             id: MD5.hex_md5(file).to(10)
             number: id3[index].track?.no || index
             name: id3[index].title
-            artistName: artistName
+            artistName: [id3[index].artist || id3[index].albumartist].unique().compact()
             basename: basename
             path: file
             albumId: album.id

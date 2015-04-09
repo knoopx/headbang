@@ -1,6 +1,6 @@
 React = require("react")
 
-Format = require("../format")
+Format = require("../support/format")
 
 {Column, Row, Gutter, Divider} = require("./layout")
 List = require("./list")

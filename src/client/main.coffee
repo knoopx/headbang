@@ -5,4 +5,6 @@ ReactDOM = require("react-dom")
 
 require("react-tap-event-plugin")()
 
-ReactDOM.render(React.createElement(require("./components/app")), document.querySelector("#root"))
+App = React.createElement(require("./components/app"))
+
+app = ReactDOM.render(App, document.querySelector("#root"))

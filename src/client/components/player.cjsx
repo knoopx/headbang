@@ -2,8 +2,11 @@ React = require("react")
 ReactDOM = require("react-dom")
 Combokeys = require('combokeys')
 
+Format = require("../support/format")
+
+Button = require("./button")
+ButtonGroup = require("./button-group")
 {Column, Row, Gutter, Divider} = require("./layout")
-Format = require("../format")
 
 module.exports = React.createClass
   displayName: "Player"
@@ -82,7 +85,7 @@ module.exports = React.createClass
 
   render: ->
     <Column>
-      <Row className="wrapper">
+      <Row padding="10px">
         <Column>
           <Row alignItems="center">
             <Column>
@@ -91,7 +94,7 @@ module.exports = React.createClass
                 <Gutter/>
                 <input max={@state.duration} min="0" value={@state.time} onChange={@handleTimeSeek} type="range" />
                 <Gutter/>
-                <span className="duration">{Format.duration(@state.duration)}</span>
+                <span className="duration">{Format.duration(@state.duration || 0)}</span>
                 <Gutter/>
               </div>
             </Column>
@@ -99,11 +102,11 @@ module.exports = React.createClass
             <Gutter/>
 
             <Column flex="initial">
-              <div className="btn-group">
-                <a onClick={@props.onPlayPrev} className="btn btn-default"><i className="fa fa-backward"></i></a>
-                <a onClick={@playOrPause} className="btn btn-default">{@renderPlayOrPauseIcon()}</a>
-                <a onClick={@props.onPlayNext} className="btn btn-default"><i className="fa fa-forward"></i></a>
-              </div>
+              <ButtonGroup>
+                <Button onClick={@props.onPlayPrev}><i className="fa fa-backward"></i></Button>
+                <Button onClick={@playOrPause}>{@renderPlayOrPauseIcon()}</Button>
+                <Button onClick={@props.onPlayNext}><i className="fa fa-forward"></i></Button>
+              </ButtonGroup>
             </Column>
           </Row>
         </Column>
