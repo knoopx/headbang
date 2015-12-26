@@ -102,7 +102,7 @@ module.exports = React.createClass
     albums.forEach (album) ->
       types.map (type) ->
         for value in album[type] || []
-          suggestions[type] = suggestions[type].add(value.toLocaleLowerCase())
+          suggestions[type] = suggestions[type].add(value.toLocaleLowerCase().trim())
 
     list = Object.keys(suggestions).map (type) ->
       suggestions[type].toArray().map (value) ->
