@@ -75,7 +75,7 @@ module.exports = React.createClass
       {<Gutter /> if Object.size(@state.filter) > 0}
       <input ref="query" placeholder="type to filter..." type="text" onKeyDown={@handleKeyDown} valueLink={value: @state.query, requestChange: @handleQueryChange} />
       <Gutter />
-      <div className="text-right text-muted"><em>{@state.albums.length} albums</em></div>
+      <div className="text-right text-muted"><em>{@state.albums.length} album(s)</em></div>
       <Gutter />
       <div className="filter-group-actions">
         {<i className="fa fa-times" onClick={@clearQuery}></i> if @state.query?.length > 0}
@@ -153,7 +153,12 @@ module.exports = React.createClass
             .toArray()
           @setState
             isLoading: false
-            suggestions: matches
+            suggestions: matches.map (match) =>
+              f = Object.clone(@state.filter)
+              f[match.type] = match.value
+              Object.merge match,
+                count: filter(AlbumStore)(Object.merge({starred: @state.starred}, f)).length
+              match
           , =>
             @suggestTimeout = null
         else

@@ -65,8 +65,15 @@ module.exports = React.createClass
   renderSuggestion: (suggestion, index) ->
     <ListItem key={index} active={@state.activeIndex == index} onClick={=> @handleAcceptSuggestion(index)}>
       <Row alignItems="baseline">
-        <strong>{suggestion.value}</strong>
+        <Column flex="initial">
+          <strong>{suggestion.value}</strong>
+        </Column>
         <Gutter/>
-        <small className="text-muted">{suggestion.type}</small>
+        <Column flex="initial">
+          <small className="text-muted">{suggestion.type}</small>
+        </Column>
+        <Column flex={1} className="text-right">
+          <small>{suggestion.count} album(s)</small>
+        </Column>
       </Row>
     </ListItem>
