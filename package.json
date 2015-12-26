@@ -51,6 +51,7 @@
     "gulp-util": "^3.0.7",
     "less": "^2.5.3",
     "livereactload": "^2.1.0",
+    "mocha": "^2.3.4",
     "moment": "^2.10.6",
     "qs": "^6.0.1",
     "react-addons-linked-state-mixin": "^0.14.3",
@@ -67,6 +68,6 @@
   "scripts": {
     "release": "npm version patch && npm publish && git push --follow-tags",
     "deploy": "npm run build && npm run git-commit && npm run git-push",
-    "spec": "mocha --compilers coffee:coffee-script/register -r sugar spec/"
+    "spec": "mocha --compilers coffee:coffee-script/register -r sugar spec/**/*-spec.coffee"
   }
 }

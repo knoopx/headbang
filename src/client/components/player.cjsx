@@ -2,7 +2,7 @@ React = require("react")
 ReactDOM = require("react-dom")
 Combokeys = require('combokeys')
 
-Format = require("../support/format")
+Format = require("../../common/format")
 
 Button = require("./button")
 ButtonGroup = require("./button-group")

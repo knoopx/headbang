@@ -5,7 +5,7 @@ io = require("socket.io-client")()
 AlbumStore = require("../store/album-store")
 TrackStore = require("../store/track-store")
 JobStore = require("../store/job-store")
-filter = require("../support/filter")
+filter = require("../../common/filter")
 
 {Column, Row, Gutter, Divider} = require("./layout")
 AlbumList = require("./album-list")

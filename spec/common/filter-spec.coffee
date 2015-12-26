@@ -1,5 +1,5 @@
 {expect} = require("chai")
-filter = require("../src/client/filter")
+filter = require("../../src/common/filter")
 
 describe 'filter', ->
   it "filter([a: 1, b: 2])(a: 1)", ->

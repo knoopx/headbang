@@ -1,5 +1,5 @@
 {expect} = require("chai")
-AlbumName = require("../src/server/support/album-name")
+AlbumName = require("../../src/server/support/album-name")
 
 describe 'Array', ->
   it "#strip()", ->

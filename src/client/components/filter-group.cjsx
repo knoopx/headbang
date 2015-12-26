@@ -3,7 +3,7 @@ Immutable = require("immutable")
 levenshtein = require('fast-levenshtein')
 
 AlbumStore = require("../store/album-store")
-filter = require("../support/filter")
+filter = require("../../common/filter")
 
 {Column, Row, Gutter, Divider} = require("./layout")
 Spinner = require("./spinner")
