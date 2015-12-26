@@ -157,7 +157,7 @@ module.exports = React.createClass
               f = Object.clone(@state.filter)
               f[match.type] = match.value
               Object.merge match,
-                count: filter(AlbumStore)(Object.merge({starred: @state.starred}, f)).length
+                count: filter(AlbumStore)(Object.merge({starred: @state.starred}, f)).count()
               match
           , =>
             @suggestTimeout = null
