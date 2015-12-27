@@ -14,10 +14,7 @@ Router.use Morgan('dev')
 Router.use CORS()
 Router.use(BodyParser.json())
 
-Router.use Express.static(Path.resolve("build"))
-
-Router.get '/', (request, response) ->
-  response.sendFile(Path.resolve(__dirname, Path.resolve("src/client/index.html")))
+Router.use Express.static(Path.resolve(__dirname, "../browser"))
 
 Router.patch "/albums/:id", Compression(), (request, response) ->
   if album = AlbumStore.get(request.params.id)

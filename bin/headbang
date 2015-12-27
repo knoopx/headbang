@@ -1,5 +1,0 @@
-#!/usr/bin/env node
-
-require("coffee-script/register");
-require("sugar");
-require("../src/bin/main").parse(process.argv)
