@@ -65,6 +65,7 @@
     "gulp-uglify": "^1.5.1",
     "less": "^2.5.3",
     "livereactload": "^2.1.0",
+    "livereload-js": "^2.2.2",
     "mocha": "^2.3.4",
     "moment": "^2.10.6",
     "qs": "^6.0.1",
