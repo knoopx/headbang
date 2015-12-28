@@ -1,5 +1,3 @@
-require("coffee-script/register");
-require("sugar");
 require("./build/cli/main").parse([
   '/usr/bin/env node',
   'bin/headbang',
