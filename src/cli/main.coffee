@@ -1,4 +1,6 @@
 require("sugar")
+require("source-map-support/register")
+
 commander = require('commander')
 
 Server = require("./server")

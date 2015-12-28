@@ -1,4 +1,5 @@
 require("sugar")
+require("source-map-support/register")
 
 window.LiveReloadOptions = { host:(location.host || 'localhost').split(':')[0] }
 require('livereload-js')

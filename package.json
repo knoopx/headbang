@@ -38,6 +38,7 @@
     "ngram-fingerprint": "^1.0.0",
     "q": "^1.4.1",
     "socket.io": "^1.3.7",
+    "source-map-support": "^0.4.0",
     "sugar": "^1.4.1",
     "timetrickle": "^0.1.1",
     "uuid": "^2.0.1",
