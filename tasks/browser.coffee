@@ -35,6 +35,5 @@ gulp.task 'browser:css', ->
 gulp.task 'browser:fonts', ->
   gulp.src('node_modules/font-awesome/fonts/fontawesome-webfont.*')
   .pipe gulp.dest('build/cli/browser/fonts')
-  .pipe gulp.dest('build/electron/browser/fonts')
 
 gulp.task 'browser:build', ['browser:fonts', 'browser:js', 'browser:css', 'browser:html']
