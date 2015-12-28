@@ -1,5 +1,12 @@
 React = require('react')
 
+areArraysEqual = (a, b) ->
+  return false if !a? || !b?
+  return false if a.length != b.length
+  for item, i in a
+    return false if a[i] != b[i]
+  true
+
 module.exports = React.createClass
   displayName: 'VirtualList'
 
@@ -12,19 +19,19 @@ module.exports = React.createClass
     @getVirtualState(@props)
 
   shouldComponentUpdate: (nextProps, nextState) ->
-    (@state.bufferStart != nextState.bufferStart) || (@state.height != nextState.height) || @state.items != nextState.items
+    (@state.bufferStart != nextState.bufferStart) || (@state.height != nextState.height) || !areArraysEqual(@state.items, nextState.items)
 
   componentWillReceiveProps: (nextProps) ->
     @setState(@getVirtualState(nextProps))
 
   componentDidMount: ->
-    @refs.container.addEventListener 'scroll', @handleChange
+    @refs.container.addEventListener 'scroll', @handleScroll
     @setState(@getVirtualState(@props))
 
   componentWillUnmount: ->
-    @refs.container.removeEventListener 'scroll', @handleChange
+    @refs.container.removeEventListener 'scroll', @handleScroll
 
-  handleChange: ->
+  handleScroll: ->
     @setState(@getVirtualState(@props))
 
   visibleItems: ->
@@ -65,10 +72,10 @@ module.exports = React.createClass
     # no items to render
     return state if renderStats.itemsInView.length == 0
 
-    state.items = props.items.slice(renderStats.firstItemIndex, renderStats.lastItemIndex + 1)
-    state.bufferStart = renderStats.firstItemIndex * props.itemHeight
-
-    state
+    Object.merge state,
+      items: props.items.slice(renderStats.firstItemIndex, renderStats.lastItemIndex + 1)
+      firstItemIndex: renderStats.firstItemIndex
+      bufferStart: renderStats.firstItemIndex * props.itemHeight
 
   getItems: (viewTop, viewHeight, itemHeight, itemCount) ->
     if itemCount == 0 or itemHeight == 0
