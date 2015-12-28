@@ -6,6 +6,7 @@ source = require('vinyl-source-stream')
 sourcemaps = require('gulp-sourcemaps')
 less = require("gulp-less")
 autoprefixer = require('gulp-autoprefixer')
+cssnano = require('gulp-cssnano')
 
 gulp.task 'browser:html', ->
   gulp.src('src/browser/**/*.html')
@@ -29,6 +30,7 @@ gulp.task 'browser:css', ->
   .pipe less paths: 'node_modules'
   .on 'error', notify.onError()
   .pipe autoprefixer()
+  .pipe(cssnano())
   .pipe sourcemaps.write('.')
   .pipe gulp.dest('build/cli/browser')
 
