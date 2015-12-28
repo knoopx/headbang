@@ -21,7 +21,7 @@ module.exports = React.createClass
 
   componentDidMount: ->
     @interval = setInterval =>
-      @setState(jobs: @state.jobs)
+      @refs.virtualList?.forceUpdate()
     , 1000
 
   componentWillUnmount: ->
