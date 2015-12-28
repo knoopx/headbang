@@ -31,8 +31,8 @@ gulp.task 'browser:css', ->
   .pipe sourcemaps.init()
   .pipe less paths: 'node_modules'
   .on 'error', notify.onError()
-  .pipe autoprefixer()
-  .pipe(cssnano())
+  .pipe autoprefixer(browsers: "last 2 versions")
+  .pipe cssnano()
   .pipe sourcemaps.write('.')
   .pipe gulp.dest('build/cli/browser')
 
