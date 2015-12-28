@@ -171,15 +171,20 @@ module.exports = React.createClass
     if next = @relativePlaylistItem()
       @play(next)
 
-  handleAlbumSelected: (album) ->
+  handleAlbumSelected: (album, e) ->
+    shouldClearPlaylist = !e.shiftKey
+
     TrackStore.fetch(albumId: album.id).then (tracks) =>
-      @clearPlaylist()
       items = tracks.sortBy("number").map (track) ->
         track: track
         album: album
 
-      @setPlaylist(items)
-      @play(items[0])
+      if shouldClearPlaylist
+        @clearPlaylist =>
+          @setPlaylist(items)
+          @play(items[0])
+      else
+        @setPlaylist(@state.playlist.concat(items))
 
   handlePlaylistItemSelected: (item) ->
     @play(item)
@@ -192,12 +197,12 @@ module.exports = React.createClass
     if item = @relativePlaylistItem(-1)
       @play(item)
 
-  setPlaylist: (items) ->
+  setPlaylist: (items, fn) ->
     @setItem("playlist:items", items)
-    @setState(playlist: items)
+    @setState(playlist: items, fn)
 
-  clearPlaylist: ->
-    @setPlaylist([])
+  clearPlaylist: (fn) ->
+    @setPlaylist([], fn)
 
   setActivePlaylistItem: (item, fn) ->
     @setItem("playlist:index", @state.playlist.indexOf(item))
@@ -208,7 +213,7 @@ module.exports = React.createClass
     @refs.player.pause()
     @refs.player.load("/tracks/#{track.id}/stream")
     @refs.player.play()
-    @setActivePlaylistItem(item)
+    @setActivePlaylistItem(item, fn)
     document.title = "#{album.artistName} - #{track.name} (#{album.name})"
 
   relativePlaylistItem: (offset = 1) ->

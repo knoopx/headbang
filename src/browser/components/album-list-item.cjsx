@@ -11,22 +11,19 @@ Tag = require("./tag")
 module.exports = React.createClass
   displayName: "AlbumListItem"
 
-  onSelect: ->
-    @props.onSelect(@props.album)
-
   render: ->
     <ListItem key={@props.key}>
       <Column flex="initial" style={{alignSelf:"center"}}><Star album={@props.album} /></Column>
 
       <Gutter/>
 
-      <Column flex="initial" onDoubleClick={@onSelect}>
+      <Column flex="initial" onClick={@handleSelect}>
         <Row><Artwork src={@props.album.artwork} size={40} /></Row>
       </Column>
 
       <Gutter/>
 
-      <Column onTouchTap={@onSelect}>
+      <Column onClick={@handleSelect}>
         <Row alignItems="baseline">
           <Column overflow="hidden" display="block">
             <Row alignItems="center" title={@props.album.basename}>
@@ -55,3 +52,6 @@ module.exports = React.createClass
         </Row>
       </Column>
     </ListItem>
+
+  handleSelect: (e) ->
+    @props.onSelect(@props.album, e)

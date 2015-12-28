@@ -10,7 +10,7 @@ module.exports = React.createClass
     @props.onSelect(@props.item)
 
   render: ->
-    <ListItem active={@props.active} onTouchTap={@onSelect}>
+    <ListItem active={@props.active} onClick={@onSelect}>
       <strong>{@props.item.track.name}</strong>
       <Gutter/>
       <span className="text-muted">{@props.item.track.artistName?.join(", ")}</span>
