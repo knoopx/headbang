@@ -11,8 +11,11 @@ Tag = require("./tag")
 module.exports = React.createClass
   displayName: "AlbumListItem"
 
+  shouldComponentUpdate: (nextProps, nextState) ->
+    @props.album != nextProps.album
+
   render: ->
-    <ListItem key={@props.key}>
+    <ListItem>
       <Column flex="initial" style={{alignSelf:"center"}}><Star album={@props.album} /></Column>
 
       <Gutter/>
