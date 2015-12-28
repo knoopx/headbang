@@ -1,6 +1,24 @@
 {
   "name": "headbang",
   "version": "0.1.0",
+  "description": "headbang is a self-hosted web-based music player built on top of nodejs and react.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knoopx/headbang.git"
+  },
+  "keywords": [
+    "mp3",
+    "streaming",
+    "music",
+    "player",
+    "react"
+  ],
+  "author": "Víctor Martínez <knoopx@gmail.com> (http://knoopx.net)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/knoopx/headbang/issues"
+  },
+  "homepage": "https://github.com/knoopx/headbang#readme",
   "dependencies": {
     "async": "^1.5.0",
     "axios": "^0.8.1",

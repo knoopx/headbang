@@ -27,7 +27,10 @@ gulp.task 'cli:bin', ->
   .pipe(gulp.dest('build/cli'))
 
 gulp.task 'cli:package', ->
-  packageJSON = Object.select(require("../package"), ["name", "version", "dependencies"])
+  packageJSON = Object.select(require("../package"), [
+    "name", "version", "description", "repository", "keywords",
+    "author", "license", "bugs", "homepage", "dependencies"
+  ])
   Object.merge packageJSON,
     name: "#{packageJSON.name}-cli"
     main: "main.js"
