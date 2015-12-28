@@ -2,6 +2,7 @@ React = require("react")
 
 module.exports = React.createClass
   displayName: "Gutter"
+  mixins: [require('react-addons-pure-render-mixin')]
 
   getDefaultProps: ->
     size: 10

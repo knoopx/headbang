@@ -9,6 +9,8 @@ queue = async.queue (fn, done) ->
 ArtworkImage = React.createClass
   displayName: "Artwork"
 
+  mixins: [require('react-addons-pure-render-mixin')]
+
   getInitialState: ->
     isLoading: true
 
@@ -19,17 +21,15 @@ ArtworkImage = React.createClass
     @setSource(props.src) unless @props.src == props.src
 
   setSource: (src) ->
-    setTimeout =>
-      if @isMounted()
-        queue.unshift (done) =>
-          if @isMounted()
-            img = new Image()
-            img.onload = done
-            img.src = src
-          else done()
-        , =>
-          @setState(isLoading: false) if @isMounted()
-    , 200
+    if @isMounted()
+      queue.unshift (done) =>
+        if @isMounted()
+          img = new Image()
+          img.onload = done
+          img.src = src
+        else done()
+      , =>
+        @setState(isLoading: false) if @isMounted()
 
   render: ->
     if @state.isLoading

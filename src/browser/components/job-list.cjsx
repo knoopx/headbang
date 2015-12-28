@@ -9,6 +9,7 @@ VirtualList = require('./virtual-list')
 
 module.exports = React.createClass
   displayName: "JobList"
+  mixins: [require('react-addons-pure-render-mixin')]
 
   getDefaultProps: ->
     jobs: []

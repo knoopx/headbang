@@ -5,8 +5,10 @@ Tag = require("./tag")
 
 module.exports = React.createClass
   displayName: "NowPlaying"
+  mixins: [require('react-addons-pure-render-mixin')]
   propTypes:
     item: React.PropTypes.object.isRequired
+
   render: ->
     <Row padding="10px">
       <Column flex="initial"><Artwork src={@props.item.album.artwork} /></Column>

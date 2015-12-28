@@ -5,8 +5,8 @@ VirtualList = require('./virtual-list')
 AlbumListItem = require('./album-list-item')
 
 module.exports = React.createClass
-  mixins: [require('react-addons-pure-render-mixin')]
   displayName: "AlbumList"
+  mixins: [require('react-addons-pure-render-mixin')]
 
   getInitialState: ->
     itemHeight: 57

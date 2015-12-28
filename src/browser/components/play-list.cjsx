@@ -5,8 +5,8 @@ VirtualList = require('./virtual-list')
 PlayListItem = require("./play-list-item")
 
 module.exports = React.createClass
-  mixins: [require('react-addons-pure-render-mixin')]
   displayName: "PlayList"
+  mixins: [require('react-addons-pure-render-mixin')]
 
   propTypes:
     items: React.PropTypes.arrayOf(React.PropTypes.object).isRequired

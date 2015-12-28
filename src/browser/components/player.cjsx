@@ -10,7 +10,10 @@ ButtonGroup = require("./button-group")
 module.exports = React.createClass
   displayName: "Player"
 
-  mixins: [require("./mixins/key-bindings")]
+  mixins: [
+    require("./mixins/key-bindings")
+    require('react-addons-pure-render-mixin')
+  ]
 
   propTypes:
     audio: React.PropTypes.object.isRequired

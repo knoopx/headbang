@@ -5,6 +5,7 @@ ListItem = require('./list-item')
 
 module.exports = React.createClass
   displayName: "PlayListItem"
+  mixins: [require('react-addons-pure-render-mixin')]
 
   onSelect: ->
     @props.onSelect(@props.item)
