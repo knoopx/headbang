@@ -68,7 +68,7 @@
     "livereload-js": "^2.2.2",
     "mocha": "^2.3.4",
     "moment": "^2.10.6",
-    "qs": "^6.0.1",
+    "qs": "^5.2.0",
     "react": "^0.14.3",
     "react-addons-linked-state-mixin": "^0.14.3",
     "react-addons-pure-render-mixin": "^0.14.3",
