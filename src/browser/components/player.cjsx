@@ -1,6 +1,5 @@
 React = require("react")
 ReactDOM = require("react-dom")
-Combokeys = require('combokeys')
 
 Format = require("../../common/format")
 
@@ -10,6 +9,8 @@ ButtonGroup = require("./button-group")
 
 module.exports = React.createClass
   displayName: "Player"
+
+  mixins: [require("./mixins/key-bindings")]
 
   propTypes:
     audio: React.PropTypes.object.isRequired
@@ -28,23 +29,25 @@ module.exports = React.createClass
       isPlaying: !@props.audio.paused
 
   componentDidMount: ->
-    module.onReload? =>
-      window.playerState = @state
+    module.onReload? => window.playerState = @state
     @state.audio.addEventListener("loadeddata", @handleDataLoaded)
     @state.audio.addEventListener("timeupdate", @handleTimeUpdate)
     @state.audio.addEventListener("play", @handlePlay)
     @state.audio.addEventListener("pause", @handlePause)
     @state.audio.addEventListener("ended", @handleEnded)
 
-    @combokeys = new Combokeys(document.documentElement)
-    @combokeys.bind "space", (e) =>
+    @bindKey "space", (e) =>
       @playOrPause()
       e.preventDefault()
-    @combokeys.bind "shift+right", @props.onPlayNext
-    @combokeys.bind "shift+left", @props.onPlayPrev
+    @bindKey "shift+right", (e) =>
+      @props.onPlayNext()
+      e.preventDefault()
+
+    @bindKey "shift+left", (e) =>
+      @props.onPlayPrev()
+      e.preventDefault()
 
   componentWillUnmount: ->
-    @combokeys.detach()
     @state.audio.removeEventListener("loadeddata", @handleDataLoaded)
     @state.audio.removeEventListener("timeupdate", @handleTimeUpdate)
     @state.audio.removeEventListener("play", @handlePlay)

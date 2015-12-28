@@ -1,5 +1,4 @@
 React = require("react")
-Combokeys = require('combokeys')
 io = require("socket.io-client")()
 
 AlbumStore = require("../store/album-store")
@@ -19,11 +18,13 @@ FilterGroup = require("./filter-group")
 JobList = require("./job-list")
 
 module.exports = React.createClass
+  displayName: "App"
+
   mixins: [
+    require("./mixins/key-bindings")
     require("./mixins/helpers")
     require('react-addons-pure-render-mixin')
   ]
-  displayName: "App"
 
   restoreFilter: ->
     defaults =
@@ -64,17 +65,13 @@ module.exports = React.createClass
     io.on "disconnect", @handleDisconnect
 
   componentDidMount: ->
-    module.onReload? =>
-      window.previousState = @state
-
-    @combokeys = new Combokeys(document.documentElement)
-    @combokeys.bind "command+f", (e) =>
+    module.onReload? => window.previousState = @state
+    @bindKey "command+f", (e) =>
       if @refs.filter
         @refs.filter.focus()
         e.preventDefault()
 
   componentWillUnmount: ->
-    @combokeys?.detach()
     AlbumStore.off "change", @reloadAlbums
     JobStore.off "change", @reloadJobs
 
