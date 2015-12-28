@@ -1,6 +1,6 @@
 {
   "name": "headbang",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "headbang is a self-hosted web-based music player built on top of nodejs and react.",
   "repository": {
     "type": "git",
