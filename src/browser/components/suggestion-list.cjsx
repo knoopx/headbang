@@ -52,10 +52,14 @@ module.exports = React.createClass
     @props.onDismiss()
 
   selectPrev: ->
-    @setState(activeIndex: Math.max(0, @state.activeIndex - 1))
+    if @state.activeIndex > 0
+    then @setState(activeIndex: @state.activeIndex - 1)
+    else @setState(activeIndex: @state.suggestions.length - 1)
 
   selectNext: ->
-    @setState(activeIndex: Math.min(@state.suggestions.length - 1, @state.activeIndex + 1))
+    if @state.activeIndex < @state.suggestions.length - 1
+    then @setState(activeIndex: @state.activeIndex + 1)
+    else @setState(activeIndex: 0)
 
   render: ->
     <div className="filter-group-suggestions ignore-react-onclickoutside">
