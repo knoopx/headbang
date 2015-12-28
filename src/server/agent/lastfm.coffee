@@ -23,9 +23,9 @@ module.exports = (apiKey) ->
 
     defer.promise
 
-  lookup: (album) ->
+  lookup: (album, force = false) ->
     return Q.reject(new Error("album has no name")) unless album.name?
-    return Q.reject(new Error("already looked up on lastfm")) if album.lastfm?
+    return Q.reject(new Error("already looked up on lastfm")) if album.lastfm? and not force
 
     query =
       method: "album.getinfo"
@@ -46,8 +46,7 @@ module.exports = (apiKey) ->
         year = null
         if match.wiki?.published?
           year = (new Date(match.wiki.published)).getFullYear()
-        else
-          year = tagNames.filter((tag) -> tag.match(/^\d{4}$/)).first()
+        year ||= tagNames.filter((tag) -> tag.match(/^\d{4}$/)).first()
 
         name: match.name
         artistName: [match.artist]

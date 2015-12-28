@@ -29,10 +29,14 @@ module.exports = commander
       if files.length > 0
         queue.push (next) ->
           Indexer.index(path, files, commander.force).then (album) ->
-            lastfm?.lookup(album).then (attrs) ->
+            lastfm?.lookup(album, commander.force).then (attrs) ->
+              album.name = attrs.name
+              album.artistName = attrs.artistName
+              album.artwork = attrs.artwork
+              album.lastfm = attrs.lastfm
               ["year", "genre", "tag"].each (attr) ->
-                attrs[attr] = attrs[attr].concat(album[attr]).compact().unique()
-              AlbumStore.inject(Object.merge(album, attrs))
+                album[attr] = album[attr].concat(attrs[attr]).compact().unique()
+              AlbumStore.inject(album)
             next()
 
           .catch (err) ->
