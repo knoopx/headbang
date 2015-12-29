@@ -19,6 +19,41 @@ MD5 = require("crypto/md5")
 readID3 = (tracks) ->
   Q.all(tracks.map (track) -> ID3.fromFile(track))
 
+indexAlbum = (path, files, prevAlbum = {}) ->
+  AlbumStore.eject(prevAlbum.id) if prevAlbum.id?
+
+  stat = FS.statSync(path)
+  basename = Path.basename(path)
+
+  readID3(files.sort()).then (id3) ->
+    albumName = id3.map("album").unique().first()
+
+    album = Album.build Object.merge prevAlbum,
+      id: MD5.hex_md5(path).to(10)
+      name: AlbumName.strip(albumName)
+      artistName: id3.map("artist").flatten().unique()
+      genre: Genre.match(id3.map("genre").flatten().unique())
+      tag: AlbumName.tags(basename)
+      year: id3.map("year").flatten().unique()
+      basename: basename
+      path: path
+      indexedAt: stat.birthtime || stat.ctime
+
+    for file, index in files.sort()
+      basename = Path.basename(file)
+      artistName = id3[index].albumartist
+      artistName = id3[index].artist unless artistName.length > 0
+      TrackStore.inject Track.build
+        id: MD5.hex_md5(file).to(10)
+        number: id3[index].track?.no || index
+        name: id3[index].title
+        artistName: [id3[index].artist || id3[index].albumartist].unique().compact()
+        basename: basename
+        path: file
+        albumId: album.id
+
+    AlbumStore.inject(album)
+
 module.exports =
   isFileIndexable: (file) ->
     ["audio/mpeg"].indexOf(Mime.lookup(file)) >= 0
@@ -26,45 +61,10 @@ module.exports =
   index: (path, files, force = false) ->
     job = JobStore.inject(Job.build(message: "Indexing #{path}"))
 
-    indexAlbum = (prevAlbum = {}) ->
-      AlbumStore.eject(prevAlbum.id) if prevAlbum.id?
-
-      stat = FS.statSync(path)
-      basename = Path.basename(path)
-
-      readID3(files.sort()).then (id3) ->
-        albumName = id3.map("album").unique().first()
-
-        album = Album.build Object.merge prevAlbum,
-          id: MD5.hex_md5(path).to(10)
-          name: AlbumName.strip(albumName)
-          artistName: id3.map("artist").flatten().unique()
-          genre: Genre.match(id3.map("genre").flatten().unique())
-          tag: AlbumName.tags(basename)
-          year: id3.map("year").flatten().unique()
-          basename: basename
-          path: path
-          indexedAt: stat.birthtime || stat.ctime
-
-        for file, index in files.sort()
-          basename = Path.basename(file)
-          artistName = id3[index].albumartist
-          artistName = id3[index].artist unless artistName.length > 0
-          TrackStore.inject Track.build
-            id: MD5.hex_md5(file).to(10)
-            number: id3[index].track?.no || index
-            name: id3[index].title
-            artistName: [id3[index].artist || id3[index].albumartist].unique().compact()
-            basename: basename
-            path: file
-            albumId: album.id
-
-        AlbumStore.inject(album)
-
     Album.load(path).then (album) ->
       if force
-      then indexAlbum(album)
+      then indexAlbum(path, files, album)
       else album
-    .catch(indexAlbum)
+    .catch -> indexAlbum(path, files)
     .fin ->
       JobStore.eject(job)
