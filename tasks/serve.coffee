@@ -35,6 +35,6 @@ gulp.task 'serve', ['browser:fonts', 'browser:css', 'browser:html', 'cli:common'
   gulp.watch 'src/common/**/*.coffee', ['cli:common']
   gulp.watch 'src/cli/**/*.coffee', ['cli:bin']
   gulp.watch 'build/cli/browser/**/*.css', (files) -> server.notify(files)
-  gulp.watch ['build/cli/main.js', 'build/cli/server/**/*.js'], -> server.start()
+  gulp.watch ['build/cli/main.js', 'build/cli/{server,common}/**/*.js'], -> server.start()
 
   rebundle()

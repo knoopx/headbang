@@ -12,6 +12,7 @@ Path = require("path")
 
 Album = require("./server/model/album")
 AlbumStore = require("./server/store/album-store")
+Support = require("./common/support")
 
 module.exports = commander
 .version(require("./package").version)
@@ -31,15 +32,9 @@ module.exports = commander
       if files.length > 0
         queue.push (next) ->
           Indexer.index(path, files, commander.force).then (album) ->
-            lastfm?.lookup(album, commander.force).then (attrs) ->
-              album.name = attrs.name
-              album.artistName = attrs.artistName
-              album.artwork = attrs.artwork
-              album.lastfm = attrs.lastfm
-              ["year", "genre", "tag"].each (attr) ->
-                album[attr] = album[attr].concat(attrs[attr]).compact().unique()
-              AlbumStore.inject(album)
             next()
+            lastfm?.lookup(album, commander.force).then (attrs) ->
+              AlbumStore.inject(Album.merge(album, attrs))
 
           .catch (err) ->
             console.log(err.stack)

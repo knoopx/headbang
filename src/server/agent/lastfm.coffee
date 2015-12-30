@@ -7,6 +7,7 @@ ArtistName = require("./../support/artist-name")
 Genre = require("./../model/genre")
 Job = require("../model/job")
 JobStore = require("../store/job-store")
+Support = require("../../common/support")
 
 parseArray = (value) -> if Array.isArray(value) then value || [] else []
 
@@ -30,29 +31,19 @@ module.exports = (apiKey) ->
     query =
       method: "album.getinfo"
       album: AlbumName.querify(album.name)
+      artist: ArtistName.querify(album.artistName[0])
       autocorrect: "1"
       api_key: apiKey
       format: "json"
 
-    if album.artistName?.length == 1
-      query.artist = ArtistName.querify(album.artistName[0])
-    else if album.artistName?.length < 3
-      query.artist = album.artistName.map((artist) -> ArtistName.querify(artist)).join(" ")
-
     performRequest(query).then (response) ->
       if match = response.album
         tagNames = match.tags.tag.map("name")
-
-        year = null
-        if match.wiki?.published?
-          year = (new Date(match.wiki.published)).getFullYear()
-        year ||= tagNames.filter((tag) -> tag.match(/^\d{4}$/)).first()
-
         name: match.name
         artistName: [match.artist]
-        year: year
+        year: Support.parseYear(match.wiki?.published) || tagNames.map(Support.parseYear).unique()
         artwork: match.image[match.image.length - 1]["#text"]
-        genre: Genre.match(tagNames)
+        genre: tagNames.map(Support.parseGenre).compact().unique()
         lastfm: Date.now()
       else
-        Q.reject(new Error("no match"))
+        Q.reject(new Error("no match: #{JSON.stringify(Object.select(query, ['artist', 'album']))}"))

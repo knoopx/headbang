@@ -12,11 +12,11 @@ module.exports =
     path: {presence: true}
     albumId: {presence: true}
 
-  build: (attrs) ->
+  build: (props) ->
     defaults =
       artistName: []
 
-    attrs = Object.merge(defaults, attrs)
-    errors = validate(attrs, @validations)
+    props = Object.merge(defaults, props)
+    errors = validate(props, @validations)
     throw new Error("Invalid attributes: #{JSON.stringify(errors)}") if errors?
-    attrs
+    props
