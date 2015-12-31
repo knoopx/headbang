@@ -36,7 +36,7 @@ indexAlbum = (path, files, prevAlbum) ->
       year: id3.map("year").flatten()
       basename: basename
       path: path
-      indexedAt: stat.birthtime || stat.ctime
+      indexedAt: (stat.birthtime || stat.ctime).getTime()
 
     if prevAlbum?
       data = Object.merge(prevAlbum, data)
