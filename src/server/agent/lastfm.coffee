@@ -2,8 +2,6 @@ Q = require("q")
 Axios = require("axios")
 rateLimit = require('timetrickle')(10, 1000)
 
-AlbumName = require("./../support/album-name")
-ArtistName = require("./../support/artist-name")
 Genre = require("./../model/genre")
 Job = require("../model/job")
 JobStore = require("../store/job-store")
@@ -30,8 +28,8 @@ module.exports = (apiKey) ->
 
     query =
       method: "album.getinfo"
-      album: AlbumName.querify(album.name)
-      artist: ArtistName.querify(album.artistName[0])
+      album: Support.querify(album.name)
+      artist: Support.querify(album.artistName[0])
       autocorrect: "1"
       api_key: apiKey
       format: "json"

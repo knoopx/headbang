@@ -12,7 +12,7 @@ Album = require("./../model/album")
 AlbumStore = require("./../store/album-store")
 Track = require("./../model/track")
 TrackStore = require("./../store/track-store")
-ID3 = require("./../support/id3")
+ID3 = require("./../id3")
 AlbumName = require("./../support/album-name")
 MD5 = require("crypto/md5")
 Support = require("../../common/support")
@@ -29,10 +29,10 @@ indexAlbum = (path, files, prevAlbum) ->
   readID3(files.sort()).then (id3) ->
     data =
       id: MD5.hex_md5(path).to(10)
-      name: AlbumName.strip(id3.map("album").unique().first()) # todo: handle directories with multiple albums
-      artistName: id3.map("artist").flatten()
+      name: Support.normalizeAlbumName(id3.map("album").unique().first()) # todo: handle directories with multiple albums
+      artistName: id3.map("artist").flatten().map(Support.normalizeArtistName).flatten()
       genre: id3.map("genre").flatten().map(Support.parseGenre).compact().unique()
-      tag: AlbumName.tags(basename)
+      tag: Support.parseAlbumTags(basename)
       year: id3.map("year").flatten()
       basename: basename
       path: path
