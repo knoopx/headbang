@@ -98,7 +98,7 @@ module.exports = React.createClass
               <div className="range">
                 <span className="time">{Format.duration(@state.time)}</span>
                 <Gutter/>
-                <input max={@state.duration} min="0" value={@state.time} onChange={@handleTimeSeek} type="range" />
+                <input max={@state.duration} min="0" value={@state.time} onChange={@handleTimeSeek} type="range" tabIndex="-1" />
                 <Gutter/>
                 <span className="duration">{Format.duration(@state.duration || 0)}</span>
                 <Gutter/>
@@ -109,9 +109,9 @@ module.exports = React.createClass
 
             <Column flex="initial">
               <ButtonGroup>
-                <Button onClick={@props.onPlayPrev}><i className="fa fa-backward"></i></Button>
-                <Button onClick={@playOrPause}>{@renderPlayOrPauseIcon()}</Button>
-                <Button onClick={@props.onPlayNext}><i className="fa fa-forward"></i></Button>
+                <Button onClick={@props.onPlayPrev}><i className="fa fa-backward" tabIndex="-1"></i></Button>
+                <Button onClick={@playOrPause} tabIndex="-1">{@renderPlayOrPauseIcon()}</Button>
+                <Button onClick={@props.onPlayNext} tabIndex="-1"><i className="fa fa-forward"></i></Button>
               </ButtonGroup>
             </Column>
           </Row>
