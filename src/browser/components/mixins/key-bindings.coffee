@@ -5,8 +5,9 @@ module.exports =
   keyBindings: []
 
   bindKey: (key, fn) ->
-    KeyboardJS.bind(key, fn)
-    @keyBindings.push(fn)
+    binding = (e) -> fn(e) unless ["INPUT", "TEXTAREA"].find(e.target.tagName)
+    KeyboardJS.bind(key, binding)
+    @keyBindings.push(binding)
     @keyMap.push(key)
 
   componentWillUnmount: ->
