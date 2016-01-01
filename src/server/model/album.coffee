@@ -8,6 +8,7 @@ AlbumStore = require("./../store/album-store")
 Track = require("./track")
 TrackStore = require("./../store/track-store")
 Support = require("../../common/support")
+merge = require("../../common/merge")
 
 module.exports =
   validations:
@@ -44,24 +45,13 @@ module.exports =
     obj
 
   merge: (a, b) ->
-    b = @parse(b)
-    mergeUniqueValues = (a, b) => Support.wrapArray(a).concat(b).unique()
-    replaceIfSourceIsEmpty = (a, b) -> if Support.isEmpty(a) then b else a
-    replaceUnlessTargetIsEmpty = (a, b) -> if Support.isEmpty(b) then a else b
-
-    rules =
-      name: replaceUnlessTargetIsEmpty
-      artwork: replaceIfSourceIsEmpty
-      artistName: replaceUnlessTargetIsEmpty
-      genre: mergeUniqueValues
-      tag: mergeUniqueValues
-      year: mergeUniqueValues
-
-    obj = Object.clone(a)
-    Object.keys(rules).each (propName) ->
-      result = rules[propName](a[propName], b[propName])
-      obj[propName] = result
-    obj
+    merge a, @parse(b),
+      name: merge.fn.replaceUnlessTargetIsEmpty
+      artwork: merge.fn.replaceIfSourceIsEmpty
+      artistName: merge.fn.replaceUnlessTargetIsEmpty
+      genre: merge.fn.mergeUniqueValues
+      tag: merge.fn.mergeUniqueValues
+      year: merge.fn.mergeUniqueValues
 
   dump: (obj) ->
     throw new Error("Unexpected argument") unless obj.id? and obj.path?
