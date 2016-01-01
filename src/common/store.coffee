@@ -12,6 +12,7 @@ class Store
 
   toArray: -> @map.toArray()
   filter: (opts) -> @map.filter(opts)
+  sort: (opts) -> @map.sort(opts)
   sortBy: (opts) -> @map.sortBy(opts)
   forEach: (fn) -> @map.forEach(fn)
 

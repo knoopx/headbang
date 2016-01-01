@@ -39,6 +39,8 @@ module.exports =
       year: Support.parseStringArray
       starred: Support.parseBool
       indexedAt: (value) -> Support.parseInt(value) || Date.now()
+      lastfm: Support.parseInt
+      discogs: Support.parseInt
 
     obj = {}
     Object.keys(rules).each (propName) ->
@@ -55,7 +57,9 @@ module.exports =
       tag: merge.fn.mergeUniqueValues
       label: merge.fn.mergeUniqueValues
       country: merge.fn.mergeUniqueValues
-      year: merge.fn.mergeUniqueValues
+      year: merge.fn.replaceIfSourceIsEmpty
+      lastfm: merge.fn.replaceUnlessTargetIsEmpty
+      discogs: merge.fn.replaceUnlessTargetIsEmpty
 
   dump: (obj) ->
     throw new Error("Unexpected argument") unless obj.id? and obj.path?

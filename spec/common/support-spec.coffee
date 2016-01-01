@@ -26,6 +26,7 @@ describe 'Support', ->
 
   describe "normalizeAlbumName", ->
     it "false positives", ->
+      expect(Support.normalizeAlbumName("d.a.n.c.e.")).to.deep.eq("d.a.n.c.e.")
       expect(Support.normalizeAlbumName("Satán Vive")).to.deep.eq("Satán Vive")
 
     it "normalizes spaces", ->
@@ -36,6 +37,7 @@ describe 'Support', ->
       expect(Support.normalizeAlbumName("Album Title [Notes]")).to.deep.eq("Album Title")
 
     it "strips catalog number", ->
+      expect(Support.normalizeAlbumName("Album-Title")).to.deep.eq("Album-Title")
       expect(Support.normalizeAlbumName("Album Title-NUM001 Vinyl")).to.deep.eq("Album Title")
 
     it "strips references", ->
@@ -49,6 +51,14 @@ describe 'Support', ->
       expect(Support.normalizeAlbumName("Album Title (7\")")).to.deep.eq("Album Title")
 
   describe "normalizeArtistName", ->
+    it "splits multiple artists", ->
+      expect(Support.normalizeArtistName("Excision and Space Laces")).to.deep.eq(["Excision", "Space Laces"])
+      expect(Support.normalizeArtistName("one  and  another")).to.deep.eq(["one", "another"])
+      expect(Support.normalizeArtistName("medeski, martin and wood")).to.deep.eq(["medeski", "martin", "wood"])
+      expect(Support.normalizeArtistName("one/another")).to.deep.eq(["one", "another"])
+      expect(Support.normalizeArtistName("one / another")).to.deep.eq(["one", "another"])
+
+
     it "strips () and []", ->
       expect(Support.normalizeArtistName("artist (1)")).to.deep.eq(["artist"])
       expect(Support.normalizeArtistName("artist [1]")).to.deep.eq(["artist"])

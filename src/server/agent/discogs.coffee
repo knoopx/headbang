@@ -20,6 +20,8 @@ module.exports = (apiKey) ->
     query =
       release_title: Support.querify(album.name)
       artist: Support.querify(album.artistName[0])
+      format: album.tag.join(" ")
+      year: album.year.join(" ")
       type: "release"
 
     @performRequest(query).then (res) =>

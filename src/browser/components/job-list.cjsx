@@ -55,4 +55,4 @@ module.exports = React.createClass
 
   handleToggled: ->
     @setState(isCollapsed: !@state.isCollapsed)
-    @refs.virtualList?.handleChange()
+    @refs.virtualList?.forceUpdate()

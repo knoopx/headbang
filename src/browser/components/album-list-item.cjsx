@@ -14,6 +14,18 @@ module.exports = React.createClass
   shouldComponentUpdate: (nextProps, nextState) ->
     @props.album != nextProps.album
 
+  getInitialState: ->
+    agents: @getAgents(@props.album)
+
+  componentWillReceiveProps: (nextProps) ->
+    @setState(@getAgents(nextProps.album))
+
+  getAgents: (album) ->
+    agents = []
+    agents.push(<i key="lastfm" className="fa fa-lastfm text-muted" style={margin: "0 2px"} title="last.fm" />) if album.lastfm?
+    agents.push(<i key="discogs" className="fa fa-dot-circle-o text-muted" style={margin: "0 2px"} title="discogs" />) if album.discogs?
+    agents
+
   render: ->
     <ListItem>
       <Column flex="initial" style={{alignSelf:"center"}}><Star album={@props.album} /></Column>
@@ -28,30 +40,47 @@ module.exports = React.createClass
 
       <Column onClick={@handleSelect}>
         <Row alignItems="baseline">
-          <Column overflow="hidden" display="block">
+          <Column flex="2 0 auto" overflow="hidden" display="block">
             <Row alignItems="center" title={@props.album.basename}>
               <Column overflow="hidden" flex="initial" display="block">
-                <strong>{@props.album.name}</strong>
+                <Row><strong>{@props.album.name}</strong></Row>
               </Column>
+
               {<Gutter/> if @props.album.tag.length > 0}
+
               <Column overflow="hidden" flex="initial">
                 <Row>{@props.album.tag.map((tagName) -> <Tag key={tagName} name={tagName}/>)}</Row>
               </Column>
+
               <Gutter size={6}/>
-              <Column alignSelf="flex-end">
-                <small className="text-muted">{moment(@props.album.indexedAt).fromNow()}</small>
+
+              <Column overflow="hidden" flex="initial">
+                <Row><small className="text-muted">{moment(@props.album.indexedAt).fromNow()}</small></Row>
               </Column>
             </Row>
           </Column>
 
-          <Column flex="initial" overflow="hidden" display="block">
-            <small className="text-muted text-right">{(@props.album.year.concat(@props.album.label).compact().join(', '))}</small>
+          <Gutter size={6}/>
+
+          <Column flex="0 2 auto" overflow="hidden" display="block">
+            <small className="text-muted">{(@props.album.year.concat(@props.album.label).compact().join(', '))}</small>
           </Column>
         </Row>
 
         <Row alignItems="baseline">
-          <Column overflow="hidden" className="text-muted" display="block">{@props.album.artistName?.join(", ")}</Column>
-          <Column flex="initial" overflow="hidden"className="text-right"><small className="text-muted">{@props.album.genre?.join(', ')}</small></Column>
+          <Column flex="2 0 auto" overflow="hidden" className="text-muted">
+            <Row alignItems="center">
+              {@props.album.artistName?.join(", ")}
+              <Gutter size={4} />
+              {@state.agents}
+            </Row>
+          </Column>
+
+          <Gutter size={6}/>
+
+          <Column flex="0 2 auto" overflow="hidden">
+            <Row><small className="text-muted">{@props.album.genre?.join(', ')}</small></Row>
+          </Column>
         </Row>
       </Column>
     </ListItem>

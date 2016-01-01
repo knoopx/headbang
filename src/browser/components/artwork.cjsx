@@ -7,7 +7,7 @@ queue = async.queue (fn, done) ->
 , 10
 
 ArtworkImage = React.createClass
-  displayName: "Artwork"
+  displayName: "ArtworkImage"
 
   mixins: [require('react-addons-pure-render-mixin')]
 
@@ -35,7 +35,7 @@ ArtworkImage = React.createClass
     if @state.isLoading
       <Spinner size={Math.round(@props.size * 0.5)} />
     else
-      <div style={backgroundImage: "url('#{@props.src}')", width: "#{@props.size}px", height: "#{@props.size}px"} className="artwork-image"></div>
+      <div className="artwork-image" style={backgroundImage: "url('#{@props.src}')", width: "#{@props.size}px", height: "#{@props.size}px"}></div>
 
 module.exports = React.createClass
   displayName: "Artwork"

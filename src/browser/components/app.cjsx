@@ -1,5 +1,6 @@
 React = require("react")
 io = require("socket.io-client")()
+firstBy = require('thenby')
 
 AlbumStore = require("../store/album-store")
 TrackStore = require("../store/track-store")
@@ -43,8 +44,13 @@ module.exports = React.createClass
 
   getDefaultProps: ->
     orderFn:
-      ascending: (album) -> [album.artistName?.sort().join().toLocaleLowerCase(), album.year, album.name.toLocaleLowerCase(), album.id]
-      recent: (album) -> -Date.parse(album.indexedAt)
+      ascending:
+        firstBy((a) -> a.artistName.length)
+        .thenBy((a) -> a.artistName?.sort().first().toLocaleLowerCase())
+        .thenBy("year").thenBy((a) -> a.name.toLocaleLowerCase())
+        .thenBy("id")
+
+      recent: firstBy("indexedAt", -1).thenBy("id")
 
   getInitialState: ->
     if window.previousState?
@@ -223,7 +229,7 @@ module.exports = React.createClass
     , @state.filter.filter
 
     orderFn = @props.orderFn[@state.filter.order]
-    @setState(albums: filter(AlbumStore.sortBy(orderFn))(query).toArray())
+    @setState(albums: filter(AlbumStore.sort(orderFn))(query).toArray())
   ).debounce(50)
 
   reloadJobs: (->

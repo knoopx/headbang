@@ -7,6 +7,8 @@ require('livereload-js')
 React = require("react")
 ReactDOM = require("react-dom")
 
-require("react-tap-event-plugin")()
+unless window.reactTapEventInitialized
+  require("react-tap-event-plugin")()
+  window.reactTapEventInitialized = true
 
 ReactDOM.render(React.createElement(require("./components/app")), document.querySelector("#root"))

@@ -21,8 +21,6 @@ readID3 = (tracks) ->
   Q.all(tracks.map (track) -> ID3.fromFile(track))
 
 indexAlbum = (path, files, prevAlbum) ->
-  AlbumStore.eject(prevAlbum.id) if prevAlbum?.id?
-
   stat = FS.statSync(path)
   basename = Path.basename(path)
 
@@ -30,7 +28,7 @@ indexAlbum = (path, files, prevAlbum) ->
     data =
       id: MD5.hex_md5(path).to(10)
       name: Support.normalizeAlbumName(id3.map("album").unique().first()) # todo: handle directories with multiple albums
-      artistName: id3.map("artist").flatten().map(Support.normalizeArtistName).flatten()
+      artistName: id3.map("artist").flatten().unique().map(Support.normalizeArtistName).flatten().unique()
       genre: id3.map("genre").flatten().map(Support.parseGenre).compact().unique()
       tag: Support.parseAlbumTags(basename)
       year: id3.map("year").flatten()
@@ -39,20 +37,18 @@ indexAlbum = (path, files, prevAlbum) ->
       indexedAt: (stat.birthtime || stat.ctime).getTime()
 
     if prevAlbum?
+      AlbumStore.eject(prevAlbum)
       data = Object.merge(prevAlbum, data)
 
     album = Album.build(data)
 
     for file, index in files.sort()
-      basename = Path.basename(file)
-      artistName = id3[index].albumartist
-      artistName = id3[index].artist unless artistName.length > 0
       TrackStore.inject Track.build
         id: MD5.hex_md5(file).to(10)
         number: id3[index].track?.no || index
         name: id3[index].title
-        artistName: [id3[index].artist || id3[index].albumartist].compact().unique()
-        basename: basename
+        artistName: id3[index].artist.map(Support.normalizeArtistName).flatten().unique()
+        basename: Path.basename(file)
         path: file
         albumId: album.id
 
@@ -65,6 +61,7 @@ module.exports =
   index: (path, files, force = false) ->
     job = JobStore.inject(Job.build(message: "Indexing #{path}"))
     Album.load(path).then (album) ->
+      AlbumStore.inject(album)
       if force
       then indexAlbum(path, files, album)
       else album

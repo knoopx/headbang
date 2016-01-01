@@ -12,7 +12,7 @@ module.exports = React.createClass
     display: @props.display
     flex: @props.flex
     flexDirection: "row"
-    flexWrap: "wrap"
+    flexWrap: @props.flexWrap || "nowrap"
     width: "100%"
     overflow: @props.overflow
     textOverflow: "ellipsis"
