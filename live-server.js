@@ -3,5 +3,5 @@ require("./build/cli/main").parse([
   'bin/headbang',
   '--last-fm', process.env["LASTFM_API_KEY"],
   '--force',
-  '/Volumes/Storage/Mp3/'
+  process.env["HEADBANG_LIBRARY"]
 ]);
