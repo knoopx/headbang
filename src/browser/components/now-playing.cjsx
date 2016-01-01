@@ -20,7 +20,7 @@ module.exports = React.createClass
           </Column>
           <Gutter/>
           <Column overflow="hidden">
-            <small className="text-muted text-right">{([@props.item.album.year].concat(@props.item.album.labels).compact().join(', '))}</small>
+            <small className="text-muted text-right">{([@props.item.album.year].concat(@props.item.album.label).compact().join(', '))}</small>
           </Column>
         </Row>
         <Row alignItems="center">

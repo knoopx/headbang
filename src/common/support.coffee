@@ -10,6 +10,7 @@ support =
 
   normalize: (value) ->
     value
+    .replace(/[\_]+/g, ' ') # replace '_' with ' '
     .replace(/\b\s*\&\s*\b/gi, " and ") # replace '&' with 'and'
     .replace(/\b([\.\_\'\-\s]+)n([\.\_\'\-\s])+\b/g, " and ") # replace '-n-' with 'and'
     .replace(/\s+/g, ' ') # multiple spaces with single space
@@ -22,13 +23,15 @@ support =
     support.normalize(value)
 
   normalizeAlbumName: (value) ->
+    value = support.normalize(value)
+    value = value.replace(/([\w\s]+\w)\-[A-Z0-9].+/g, "$1") # Album Name-CATNO Vinyl
     [
-      /\b(TRACKFIX|DIRFIX|READ[\_\s]*NFO)\b/gi
-      /\d+[\_\-\s]*(inch|"|i)(\s*vinyl)?/gi
-      /\b(CDM|CDEP|CDR|CDS|CD|MCD|DVDA|DVD|TAPE|VINYL|VLS|WEB|SAT)\b/g
-      /\b(EP|LP|BOOTLEG|SINGLE)\b/g
-      /\b(ADVANCE|PROMO|SAMPLER|PROPER|RERIP|RETAIL|REMIX|BONUS|LTD\.?|LIMITED)\b/g
-      /\b((RE[\_\-\s]*)?(MASTERED|ISSUE|PACKAGE|EDITION))\b/g
+      /\b(TRACKFIX|DIRFIX|READ[\-\s]*NFO)\b/gi
+      /\d+[\-\s]*(inch|"|i)(\s*vinyl)?/gi
+      /\b(CDM|CDEP|CDR|CDS|CD|MCD|DVDA|DVD|TAPE|VINYL|VLS|WEB|SAT|CABLE)\b/g
+      /\b(EP|LP|BOOTLEG|SINGLE)\b/gi
+      /\b(ADVANCE|PROMO|SAMPLER|PROPER|RERIP|RETAIL|REMIX|BONUS|LTD\.?|LIMITED)\b/gi
+      /\b((RE[\-\s]*)?(MASTERED|ISSUE|PACKAGE|EDITION))\b/gi
     ].each (regex) -> value = value.replace(regex, '')
 
     support.normalize(value)
@@ -38,27 +41,27 @@ support =
 
   parseAlbumTags: (value) ->
     regex =
-      VINYL: /\b(VINYL|VLS)\b/i
+      Vinyl: /\b(VINYL|VLS)\b/i
       CD: /\b(CDM|CDEP|CDR|CDS|CD|MCD)\b/i
       DVD: /\b(DVDA|DVD)\b/i
-      TAPE: /\b(TAPE)\b/i
-      WEB: /\b(WEB)\b/i
-      SAT: /\b(SAT)\b/i
-      LIMITED: /\b(LTD\.?|LIMITED)\b/gi
-      REMASTERED: /\b(REMASTERED)\b/i
-      REISSUE: /\b(REISSUE)\b/i
-      ADVANCE: /\b(ADVANCE)\b/i
-      PROMO: /\b(PROMO)\b/i
-      PROPER: /\b(PROPER)\b/i
-      RERIP: /\b(RERIP)\b/i
-      REMIX: /\b(REMIX|RMX)\b/i
-      PROPER: /\b(PROPER)\b/i
-      RETAIL: /\b(RETAIL)\b/i
-      SAMPLER: /\b(SAMPLER)\b/i
+      Cassette: /\b(TAPE)\b/i
+      File: /\b(WEB|SAT)\b/i
+      MP3: /\b(WEB|SAT)\b/i
+      "Limited Edition": /\b(LTD\.?|LIMITED)\b/i
+      Remastered: /\b(REMASTERED)\b/i
+      Reissue: /\b(REISSUE)\b/i
+      Advance: /\b(ADVANCE)\b/i
+      Promo: /\b(PROMO)\b/i
+      Rerip: /\b(RERIP)\b/i
+      Remix: /\b(REMIX|RMX)\b/i
+      Proper: /\b(PROPER)\b/i
+      Retail: /\b(RETAIL)\b/i
+      Sampler: /\b(SAMPLER)\b/i
       EP: /\b(EP)\b/i
       LP: /\b(LP)\b/i
-      BOOTLEG: /\b(BOOTLEG)\b/i
-      SINGLE: /\b(SINGLE|VLS|CDS)\b/i
+      Bootleg: /\b(BOOTLEG)\b/i
+      Single: /\b(SINGLE|VLS|CDS)\b/i
+      Compilation: /^VA-/
 
     Object.keys(regex).filter (key) -> regex[key].test(value)
 

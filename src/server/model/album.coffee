@@ -34,6 +34,8 @@ module.exports =
       artistName: Support.parseStringArray
       genre: Support.parseStringArray
       tag: Support.parseStringArray
+      label: Support.parseStringArray
+      country: Support.parseStringArray
       year: Support.parseStringArray
       starred: Support.parseBool
       indexedAt: (value) -> Support.parseInt(value) || Date.now()
@@ -51,6 +53,8 @@ module.exports =
       artistName: merge.fn.replaceUnlessTargetIsEmpty
       genre: merge.fn.mergeUniqueValues
       tag: merge.fn.mergeUniqueValues
+      label: merge.fn.mergeUniqueValues
+      country: merge.fn.mergeUniqueValues
       year: merge.fn.mergeUniqueValues
 
   dump: (obj) ->

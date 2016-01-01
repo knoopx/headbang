@@ -25,9 +25,18 @@ describe 'Support', ->
       expect(Support.normalize("album title_--_")).to.deep.eq("album title")
 
   describe "normalizeAlbumName", ->
+    it "false positives", ->
+      expect(Support.normalizeAlbumName("Satán Vive")).to.deep.eq("Satán Vive")
+
+    it "normalizes spaces", ->
+      expect(Support.normalizeAlbumName("Album_Title")).to.deep.eq("Album Title")
+
     it "strips () and []", ->
       expect(Support.normalizeAlbumName("Album Title (Notes)")).to.deep.eq("Album Title")
       expect(Support.normalizeAlbumName("Album Title [Notes]")).to.deep.eq("Album Title")
+
+    it "strips catalog number", ->
+      expect(Support.normalizeAlbumName("Album Title-NUM001 Vinyl")).to.deep.eq("Album Title")
 
     it "strips references", ->
       expect(Support.normalizeAlbumName("Album Title EP")).to.deep.eq("Album Title")

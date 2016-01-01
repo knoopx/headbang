@@ -94,7 +94,7 @@ module.exports = React.createClass
       <i className="fa fa-times" onClick={=> @removeFilter(type)}></i>
     </div>
 
-  buildSuggestions: (albums, types = ["artistName", "genre", "year", "tag"]) ->
+  buildSuggestions: (albums, types = ["artistName", "genre", "label", "year", "country", "tag"]) ->
     suggestions = {}
     types.forEach (type) ->
       suggestions[type] = Immutable.Set()

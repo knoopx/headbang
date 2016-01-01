@@ -45,7 +45,7 @@ module.exports = React.createClass
           </Column>
 
           <Column flex="initial" overflow="hidden" display="block">
-            <small className="text-muted text-right">{([@props.album.year].concat(@props.album.labels).compact().join(', '))}</small>
+            <small className="text-muted text-right">{(@props.album.year.concat(@props.album.label).compact().join(', '))}</small>
           </Column>
         </Row>
 

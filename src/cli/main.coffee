@@ -1,6 +1,7 @@
 require("sugar")
 require("source-map-support/register")
 
+q = require("q")
 commander = require('commander')
 
 Server = require("./server")
@@ -18,12 +19,15 @@ module.exports = commander
 .version(require("./package").version)
 .option('-f, --force', 'force metadata reload')
 .option('--last-fm <key>', 'last.fm api key')
+.option('--discogs <key>', 'discogs api key')
 .option('-p, --port <n>', 'port number', parseInt, 3366)
 .arguments('<path>')
 .action (rootPath) ->
+  agents = []
   queue = require("async").queue ((callback, done) -> callback(done)), 10
-  lastfm = if commander.lastFm? then require("./server/agent/lastfm")(commander.lastFm)
-  else console.log("WARNING: no last.fm key specified (--last-fm). no metadata or artwork will be downloaded.")
+  agents.push(require("./server/agent/lastfm")(commander.lastFm)) if commander.lastFm?
+  agents.push(require("./server/agent/discogs")(commander.discogs)) if commander.discogs?
+  console.log("WARNING: no last.fm (--last-fm) or discogs (--discogs) key specified. no metadata or artwork will be downloaded.") if agents.length == 0
 
   Server.listen commander.port, ->
     console.log("headbang started on port #{commander.port}")
@@ -33,8 +37,9 @@ module.exports = commander
         queue.push (next) ->
           Indexer.index(path, files, commander.force).then (album) ->
             next()
-            lastfm?.lookup(album, commander.force).then (attrs) ->
-              AlbumStore.inject(Album.merge(album, attrs))
+            q.all agents.map (agent) ->
+              agent.lookup(album, commander.force).then (attrs) ->
+                AlbumStore.inject(Album.merge(album, attrs))
 
           .catch (err) ->
             console.log(err.stack)
