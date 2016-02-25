@@ -38,6 +38,7 @@ module.exports =
       country: Support.parseStringArray
       year: Support.parseStringArray
       starred: Support.parseBool
+      playCount: (value) -> Support.parseInt(value) || 0
       indexedAt: (value) -> Support.parseInt(value) || Date.now()
       lastfm: Support.parseInt
       discogs: Support.parseInt

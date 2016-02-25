@@ -28,7 +28,10 @@ module.exports = React.createClass
 
   render: ->
     <ListItem>
-      <Column flex="initial" style={{alignSelf:"center"}}><Star album={@props.album} /></Column>
+      <Column flex="initial" style={{alignSelf:"center", textAlign: "center"}}>
+        <small>{@props.album.playCount}</small>
+        <Star album={@props.album} />
+      </Column>
 
       <Gutter/>
 

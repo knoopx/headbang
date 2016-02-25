@@ -51,6 +51,7 @@ module.exports = React.createClass
         .thenBy("id")
 
       recent: firstBy("indexedAt", -1).thenBy("id")
+      playCount: firstBy("playCount", -1).thenBy("id")
 
   getInitialState: ->
     if window.previousState?

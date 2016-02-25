@@ -29,7 +29,7 @@ module.exports = React.createClass
     onChange: React.PropTypes.function
 
   getDefaultProps: ->
-    orderModes: ["ascending", "recent"]
+    orderModes: ["ascending", "recent", "playCount"]
     albums: []
     filter:
       starred: null
@@ -82,6 +82,7 @@ module.exports = React.createClass
         {<Gutter/> if @state.query?.length > 0}
         {<i className="fa fa-clock-o" onClick={@handleOrderChange}></i> if @state.order == "recent"}
         {<i className="fa fa-sort-alpha-asc" onClick={@handleOrderChange}></i> if @state.order == "ascending"}
+        {<i className="fa fa-play" onClick={@handleOrderChange}></i> if @state.order == "playCount"}
         <Gutter/>
         <i className={if @state.starred then "fa fa-star" else "fa fa-star-o"} onClick={@handleStarredClick}></i>
       </div>
