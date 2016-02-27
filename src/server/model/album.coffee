@@ -1,7 +1,8 @@
 Path = require("path")
-FS = require("fs")
 Q = require("q")
 validate = require("validate.js")
+
+FQ = require("../service/fq")
 
 AlbumName = require("./../support/album-name")
 AlbumStore = require("./../store/album-store")
@@ -65,11 +66,11 @@ module.exports =
   dump: (obj) ->
     throw new Error("Unexpected argument") unless obj.id? and obj.path?
     path = Path.join(obj.path, ".headbang")
-    FS.writeFileSync(path, JSON.stringify(Object.merge(tracks: TrackStore.toArray().filter(albumId: obj.id), obj)))
+    require("fs").writeFileSync(path, JSON.stringify(Object.merge(tracks: TrackStore.toArray().filter(albumId: obj.id), obj)))
 
   load: (path) ->
     Q.Promise (resolve, reject) ->
-      FS.readFile Path.join(path, ".headbang"), (err, data) ->
+      FQ.readFile Path.join(path, ".headbang"), (err, data) ->
         return reject(err) if err?
         try
           obj = JSON.parse(data)

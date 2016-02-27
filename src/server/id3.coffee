@@ -1,9 +1,8 @@
 Q = require("q")
 mm = require('musicmetadata')
-FS = require("fs")
 
 FileQueue = require("filequeue")
-FQ = new FileQueue(4)
+FQ = require("./service/fq")
 
 module.exports =
   fromFile: (file) ->
