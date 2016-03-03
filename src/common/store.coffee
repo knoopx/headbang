@@ -1,6 +1,8 @@
 Immutable = require("immutable")
 {EventEmitter2} = require('eventemitter2')
 
+filter = require("./filter")
+
 class Store
   constructor: (@identityKey = "id") ->
     @eventEmitter = new EventEmitter2(wildcard: true, delimiter: ':', maxListeners: 20)
@@ -12,6 +14,7 @@ class Store
 
   toArray: -> @map.toArray()
   filter: (opts) -> @map.filter(opts)
+  where: (query) -> filter(@map)(query)
   sort: (opts) -> @map.sort(opts)
   sortBy: (opts) -> @map.sortBy(opts)
   forEach: (fn) -> @map.forEach(fn)

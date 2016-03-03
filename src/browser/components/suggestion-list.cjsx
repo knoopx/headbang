@@ -9,7 +9,7 @@ module.exports = React.createClass
 
   mixins: [
     require('react-onclickoutside')
-    require('react-addons-pure-render-mixin')
+    require('react-immutable-render-mixin')
   ]
 
   getDefaultProps: ->
@@ -54,10 +54,10 @@ module.exports = React.createClass
   selectPrev: ->
     if @state.activeIndex > 0
     then @setState(activeIndex: @state.activeIndex - 1)
-    else @setState(activeIndex: @state.suggestions.length - 1)
+    else @setState(activeIndex: @state.suggestions.count() - 1)
 
   selectNext: ->
-    if @state.activeIndex < @state.suggestions.length - 1
+    if @state.activeIndex < @state.suggestions.count() - 1
     then @setState(activeIndex: @state.activeIndex + 1)
     else @setState(activeIndex: 0)
 

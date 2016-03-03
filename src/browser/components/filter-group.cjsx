@@ -13,7 +13,7 @@ module.exports = React.createClass
   displayName: "FilterGroup"
 
   mixins: [
-    require('react-addons-pure-render-mixin')
+    require('react-immutable-render-mixin')
     require("react-addons-linked-state-mixin")
   ]
 
@@ -30,7 +30,7 @@ module.exports = React.createClass
 
   getDefaultProps: ->
     orderModes: ["ascending", "recent", "playCount"]
-    albums: []
+    albums: Immutable.Map()
     filter:
       starred: null
       query: null
@@ -75,7 +75,7 @@ module.exports = React.createClass
       {<Gutter /> if Object.size(@state.filter) > 0}
       <input ref="query" placeholder="type to filter..." type="text" onKeyDown={@handleKeyDown} valueLink={value: @state.query, requestChange: @handleQueryChange} />
       <Gutter />
-      <div className="text-right text-muted"><em>{@state.albums.length} album(s)</em></div>
+      <div className="text-right text-muted"><em>{@state.albums.count()} album(s)</em></div>
       <Gutter />
       <div className="filter-group-actions">
         {<i className="fa fa-times" onClick={@clearQuery}></i> if @state.query?.length > 0}

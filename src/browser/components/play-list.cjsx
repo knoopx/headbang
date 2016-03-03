@@ -1,4 +1,6 @@
 React = require("react")
+Immutable = require("immutable")
+ImmutablePropTypes = require('react-immutable-proptypes')
 
 {Column, Row, Gutter} = require("./layout")
 VirtualList = require('./virtual-list')
@@ -6,16 +8,16 @@ PlayListItem = require("./play-list-item")
 
 module.exports = React.createClass
   displayName: "PlayList"
-  mixins: [require('react-addons-pure-render-mixin')]
+  mixins: [require('react-immutable-render-mixin')]
 
   propTypes:
-    items: React.PropTypes.arrayOf(React.PropTypes.object).isRequired
+    items: ImmutablePropTypes.list.isRequired
     itemHeight: React.PropTypes.number.isRequired
     activeItem: React.PropTypes.object
     onSelect: React.PropTypes.func.isRequired
 
   getDefaultProps: ->
-    items: []
+    items: Immutable.List()
     itemHeight: 37
 
   getInitialState: ->

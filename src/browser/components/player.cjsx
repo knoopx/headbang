@@ -12,7 +12,7 @@ module.exports = React.createClass
 
   mixins: [
     require("./mixins/key-bindings")
-    require('react-addons-pure-render-mixin')
+    require('react-immutable-render-mixin')
   ]
 
   propTypes:

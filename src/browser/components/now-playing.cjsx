@@ -5,7 +5,7 @@ Tag = require("./tag")
 
 module.exports = React.createClass
   displayName: "NowPlaying"
-  mixins: [require('react-addons-pure-render-mixin')]
+  mixins: [require('react-immutable-render-mixin')]
   propTypes:
     item: React.PropTypes.object.isRequired
 

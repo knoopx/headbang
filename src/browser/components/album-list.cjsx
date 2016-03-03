@@ -6,7 +6,7 @@ AlbumListItem = require('./album-list-item')
 
 module.exports = React.createClass
   displayName: "AlbumList"
-  mixins: [require('react-addons-pure-render-mixin')]
+  mixins: [require('react-immutable-render-mixin')]
 
   getInitialState: ->
     itemHeight: 57

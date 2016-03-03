@@ -2,7 +2,7 @@ React = require("react")
 
 module.exports = React.createClass
   displayName: "ListItem"
-  mixins: [require('react-addons-pure-render-mixin')]
+  mixins: [require('react-immutable-render-mixin')]
 
   getClassName: ->
     classNames = ["list-item"]

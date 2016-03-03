@@ -25,7 +25,7 @@ scanAndIndex = (path, agents) ->
     console.log(err.stack)
 
 removeFromIndex = (path) ->
-  AlbumStore.filter((a) -> a.path == path).forEach (album) ->
+  AlbumStore.where(path: path).forEach (album) ->
     AlbumStore.eject(album)
 
 module.exports = commander

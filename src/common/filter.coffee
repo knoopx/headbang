@@ -15,7 +15,7 @@ fn =
   array: (array) ->
     (filter) ->
       return true unless filter?
-      array.filter((value) -> fn.match(value)(filter)).length > 0
+      array.filter((value) -> fn.match(value)(filter)).count() > 0
 
   value: (value) ->
     (filter) ->

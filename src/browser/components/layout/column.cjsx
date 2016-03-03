@@ -2,7 +2,7 @@ React = require("react")
 
 module.exports = React.createClass
   displayName: "Column"
-  mixins: [require('react-addons-pure-render-mixin')]
+  mixins: [require('react-immutable-render-mixin')]
 
   getDefaultProps: ->
     display: "flex"

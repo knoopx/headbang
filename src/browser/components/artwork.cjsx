@@ -9,7 +9,7 @@ queue = async.queue (fn, done) ->
 ArtworkImage = React.createClass
   displayName: "ArtworkImage"
 
-  mixins: [require('react-addons-pure-render-mixin')]
+  mixins: [require('react-immutable-render-mixin')]
 
   getInitialState: ->
     isLoading: true
@@ -39,7 +39,7 @@ ArtworkImage = React.createClass
 
 module.exports = React.createClass
   displayName: "Artwork"
-  mixins: [require('react-addons-pure-render-mixin')]
+  mixins: [require('react-immutable-render-mixin')]
 
   getDefaultProps: ->
     size: 64

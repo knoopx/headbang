@@ -27,16 +27,16 @@ Router.get "/tracks/:id/stream", (request, response) ->
   else response.status(404)
 
 Router.get "/albums", Compression(), (request, response) ->
-  response.json(AlbumStore.toArray().filter(request.query))
+  response.json(AlbumStore.where(request.query).toArray())
 
 Router.get "/jobs", Compression(), (request, response) ->
-  response.json(JobStore.toArray().filter(request.query))
+  response.json(JobStore.where(request.query).toArray())
 
 Router.get "/tracks", (request, response) ->
   if album = AlbumStore.get(request.query.albumId)
     album.playCount += 1
     AlbumStore.inject(album)
 
-  response.json(TrackStore.toArray().filter(request.query))
+  response.json(TrackStore.where(request.query).toArray())
 
 module.exports = Router

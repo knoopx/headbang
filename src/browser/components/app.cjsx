@@ -1,4 +1,6 @@
 React = require("react")
+Immutable = require("immutable")
+
 io = require("socket.io-client")()
 firstBy = require('thenby')
 
@@ -24,7 +26,7 @@ module.exports = React.createClass
   mixins: [
     require("./mixins/key-bindings")
     require("./mixins/helpers")
-    require('react-addons-pure-render-mixin')
+    require('react-immutable-render-mixin')
   ]
 
   restoreFilter: ->
@@ -61,9 +63,9 @@ module.exports = React.createClass
       playlistIndex = @restorePlaylistIndex()
 
       isConnected: false
-      albums: []
-      jobs: []
-      playlist: playlist
+      albums: Immutable.Map()
+      jobs: Immutable.Map()
+      playlist: Immutable.List(playlist)
       filter: @restoreFilter()
       activePlaylistItem: playlist[playlistIndex]
 
@@ -114,8 +116,8 @@ module.exports = React.createClass
           </Column>
         </Row>
 
-        {<Divider /> if @state.jobs.length > 0}
-        {<JobList jobs={@state.jobs} /> if @state.jobs.length > 0}
+        {<Divider /> if @state.jobs.count() > 0}
+        {<JobList jobs={@state.jobs} /> if @state.jobs.count() > 0}
       </Column>
     else
       <Row alignItems="center">
@@ -203,7 +205,7 @@ module.exports = React.createClass
 
   setPlaylist: (items, fn) ->
     @setItem("playlist:items", items)
-    @setState(playlist: items, fn)
+    @setState(playlist: Immutable.List(items), fn)
 
   clearPlaylist: (fn) ->
     @setPlaylist([], fn)
@@ -221,18 +223,17 @@ module.exports = React.createClass
     document.title = "#{album.artistName} - #{track.name} (#{album.name})"
 
   relativePlaylistItem: (offset = 1) ->
-    @state.playlist[@state.playlist.indexOf(@state.activePlaylistItem) + offset]
+    @state.playlist.get(@state.playlist.indexOf(@state.activePlaylistItem) + offset)
 
   reloadAlbums: (->
     query = Object.merge
       name: @state.filter.query
       starred: @state.filter.starred
     , @state.filter.filter
-
     orderFn = @props.orderFn[@state.filter.order]
-    @setState(albums: filter(AlbumStore.sort(orderFn))(query).toArray())
+    @setState(albums: AlbumStore.where(query).sort(orderFn))
   ).debounce(50)
 
   reloadJobs: (->
-    @setState(jobs: JobStore.toArray())
+    @setState(jobs: JobStore.map)
   ).debounce(50)
