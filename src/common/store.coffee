@@ -19,17 +19,20 @@ class Store
   get: (id) -> @map.get(id)
 
   set: (id, newObj) ->
-    @map = @map.set(id, newObj)
-    @emit("inject", newObj)
-    @emit("change")
-    newObj
+    newMap = @map.set(id, newObj)
+    unless Immutable.is(@map, newMap)
+      @map = newMap
+      @emit("inject", newObj)
+      @emit("change")
+      newObj
 
   unset: (id) ->
     obj = @map.get(id)
-    @map = @map.delete(id)
-    @emit("eject", obj)
-    @emit("change")
-    obj
+    newMap = @map.delete(id)
+    unless Immutable.is(@map, newMap)
+      @emit("eject", obj)
+      @emit("change")
+      obj
 
   inject: (newObj) ->
     if Object.isObject(newObj)
