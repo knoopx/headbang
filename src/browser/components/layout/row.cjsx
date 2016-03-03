@@ -13,7 +13,6 @@ module.exports = React.createClass
     flex: @props.flex
     flexDirection: "row"
     flexWrap: @props.flexWrap || "nowrap"
-    width: "100%"
     overflow: @props.overflow
     textOverflow: "ellipsis"
     whiteSpace: "nowrap"

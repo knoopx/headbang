@@ -57,12 +57,10 @@ module.exports = React.createClass
     state =
       items: []
       bufferStart: 0
-      height: 0
+      height: props.items.length * props.itemHeight
 
     # early return if nothing to render
-    return state if !@refs.container? or props.items.length == 0 or props.itemHeight <= 0 or !@state?
-
-    state.height = props.items.length * props.itemHeight
+    return state if !@refs.container? or props.items.length == 0 or props.itemHeight <= 0
 
     # no space to render
     return state if @refs.container.clientHeight <= 0
