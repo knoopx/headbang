@@ -1,4 +1,5 @@
 React = require("react")
+support = require("../../../common/support")
 
 module.exports = React.createClass
   displayName: "Column"
@@ -22,4 +23,4 @@ module.exports = React.createClass
     minWidth: 0
 
   render: ->
-    <div className="column" {...@props} style={Object.merge(@getStyle(), @props.style)}/>
+    <div className="column" {...@props} style={support.merge(@getStyle(), @props.style)}/>

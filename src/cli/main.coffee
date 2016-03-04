@@ -15,7 +15,7 @@ Path = require("path")
 
 Album = require("./server/model/album")
 AlbumStore = require("./server/store/album-store")
-Support = require("./common/support")
+support = require("./common/support")
 
 queue = async.queue ((fn, done) -> fn(done)), 5
 

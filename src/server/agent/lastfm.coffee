@@ -3,7 +3,7 @@ Axios = require("axios")
 rateLimit = require('timetrickle')(10, 1000)
 
 Genre = require("../model/genre")
-Support = require("../../common/support")
+support = require("../../common/support")
 
 parseArray = (value) -> if Array.isArray(value) then value || [] else []
 
@@ -14,8 +14,8 @@ module.exports = (apiKey) ->
 
     query =
       method: "album.getinfo"
-      album: Support.querify(album.name)
-      artist: Support.querify(album.artistName[0])
+      album: support.querify(album.name)
+      artist: support.querify(album.artistName[0])
       autocorrect: "1"
       api_key: apiKey
       format: "json"
@@ -23,11 +23,11 @@ module.exports = (apiKey) ->
     @performRequest(query).then (response) ->
       if match = response.album
         tagNames = match.tags.tag.map("name")
-        name: Support.normalizeAlbumName(match.name)
-        artistName: Support.normalizeArtistName(match.artist)
-        year: Support.parseYear(match.wiki?.published) || tagNames.map(Support.parseYear).unique()
+        name: support.normalizeAlbumName(match.name)
+        artistName: support.normalizeArtistName(match.artist)
+        year: support.parseYear(match.wiki?.published) || tagNames.map(support.parseYear).unique()
         artwork: match.image[match.image.length - 1]["#text"]
-        genre: tagNames.map(Support.parseGenre).compact().unique()
+        genre: tagNames.map(support.parseGenre).compact().unique()
         lastfm: Date.now()
       else
         Q.reject(new Error("no match: #{JSON.stringify(Object.select(query, ['artist', 'album']))}"))

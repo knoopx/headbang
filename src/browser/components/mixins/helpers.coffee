@@ -1,8 +1,9 @@
 QS = require('qs')
+support = require("../../../common/support")
 
 module.exports =
   setQueryString: (obj, title = "") ->
-    window.history.pushState(null, title, "?#{QS.stringify(Object.merge(@getQueryString(), obj))}")
+    window.history.pushState(null, title, "?#{QS.stringify(support.merge(@getQueryString(), obj))}")
 
   getQueryString: ->
     QS.parse(window.location.search.from(1))

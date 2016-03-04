@@ -13,7 +13,7 @@ Track = require("../model/track")
 TrackStore = require("../store/track-store")
 ID3 = require("../id3")
 AlbumName = require("../support/album-name")
-Support = require("../../common/support")
+support = require("../../common/support")
 
 readdir = (path) -> Q.nfcall(FQ.readdir.bind(FQ), path)
 stat = (file) -> Q.nfcall(FQ.stat.bind(FQ), file)
@@ -31,10 +31,10 @@ indexAlbum = (path, prevAlbum) ->
         readID3(files).then (id3) ->
           data =
             id: MD5.hex_md5(path).to(10)
-            name: Support.normalizeAlbumName(id3.map("album").unique().first()) # todo: handle directories with multiple albums
-            artistName: id3.map("artist").flatten().unique().map(Support.normalizeArtistName).flatten().unique()
-            genre: id3.map("genre").flatten().map(Support.parseGenre).compact().unique()
-            tag: Support.parseAlbumTags(basename)
+            name: support.normalizeAlbumName(id3.map("album").unique().first()) # todo: handle directories with multiple albums
+            artistName: id3.map("artist").flatten().unique().map(support.normalizeArtistName).flatten().unique()
+            genre: id3.map("genre").flatten().map(support.parseGenre).compact().unique()
+            tag: support.parseAlbumTags(basename)
             year: id3.map("year").flatten()
             basename: basename
             path: path
@@ -42,7 +42,7 @@ indexAlbum = (path, prevAlbum) ->
 
           if prevAlbum?
             AlbumStore.eject(prevAlbum)
-            data = Object.merge(prevAlbum, data)
+            data = support.merge(prevAlbum, data)
 
           album = Album.build(data)
 
@@ -51,7 +51,7 @@ indexAlbum = (path, prevAlbum) ->
               id: MD5.hex_md5(file).to(10)
               number: id3[index].track?.no || index
               name: id3[index].title
-              artistName: id3[index].artist.map(Support.normalizeArtistName).flatten().unique()
+              artistName: id3[index].artist.map(support.normalizeArtistName).flatten().unique()
               basename: Path.basename(file)
               path: file
               albumId: album.id

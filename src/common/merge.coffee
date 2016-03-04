@@ -1,4 +1,4 @@
-Support = require("./support")
+support = require("./support")
 
 module.exports = (a, b, rules) ->
   obj = Object.clone(a)
@@ -8,6 +8,6 @@ module.exports = (a, b, rules) ->
   obj
 
 module.exports.fn =
-  mergeUniqueValues: (a, b) => Support.wrapArray(a).concat(b).unique()
-  replaceIfSourceIsEmpty: (a, b) -> if Support.isEmpty(a) then b else a
-  replaceUnlessTargetIsEmpty: (a, b) -> if Support.isEmpty(b) then a else b
+  mergeUniqueValues: (a, b) => support.wrapArray(a).concat(b).unique()
+  replaceIfSourceIsEmpty: (a, b) -> if support.isEmpty(a) then b else a
+  replaceUnlessTargetIsEmpty: (a, b) -> if support.isEmpty(b) then a else b

@@ -8,7 +8,7 @@ AlbumName = require("../support/album-name")
 AlbumStore = require("../store/album-store")
 Track = require("./track")
 TrackStore = require("../store/track-store")
-Support = require("../../common/support")
+support = require("../../common/support")
 merge = require("../../common/merge")
 
 module.exports =
@@ -27,22 +27,22 @@ module.exports =
 
   parse: (props = {}) ->
     rules =
-      id: Support.parseString
-      name: Support.parseString
-      basename: Support.parseString
-      path: Support.parseString
-      artwork: Support.parseString
-      artistName: Support.parseStringArray
-      genre: Support.parseStringArray
-      tag: Support.parseStringArray
-      label: Support.parseStringArray
-      country: Support.parseStringArray
-      year: Support.parseStringArray
-      starred: Support.parseBool
-      playCount: (value) -> Support.parseInt(value) || 0
-      indexedAt: (value) -> Support.parseInt(value) || Date.now()
-      lastfm: Support.parseInt
-      discogs: Support.parseInt
+      id: support.parseString
+      name: support.parseString
+      basename: support.parseString
+      path: support.parseString
+      artwork: support.parseString
+      artistName: support.parseStringArray
+      genre: support.parseStringArray
+      tag: support.parseStringArray
+      label: support.parseStringArray
+      country: support.parseStringArray
+      year: support.parseStringArray
+      starred: support.parseBool
+      playCount: (value) -> support.parseInt(value) || 0
+      indexedAt: (value) -> support.parseInt(value) || Date.now()
+      lastfm: support.parseInt
+      discogs: support.parseInt
 
     obj = {}
     Object.keys(rules).each (propName) ->
@@ -66,7 +66,7 @@ module.exports =
   dump: (obj) ->
     throw new Error("Unexpected argument") unless obj.id? and obj.path?
     path = Path.join(obj.path, ".headbang")
-    require("fs").writeFileSync(path, JSON.stringify(Object.merge(tracks: TrackStore.toArray().filter(albumId: obj.id), obj)))
+    require("fs").writeFileSync(path, JSON.stringify(support.merge(tracks: TrackStore.toArray().filter(albumId: obj.id), obj)))
 
   load: (path) ->
     Q.Promise (resolve, reject) ->

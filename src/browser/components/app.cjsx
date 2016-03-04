@@ -6,7 +6,9 @@ firstBy = require('thenby')
 
 AlbumStore = require("../store/album-store")
 TrackStore = require("../store/track-store")
+
 filter = require("../../common/filter")
+support = require("../../common/support")
 
 {Column, Row, Gutter, Divider} = require("./layout")
 AlbumList = require("./album-list")
@@ -34,7 +36,7 @@ module.exports = React.createClass
       starred: @getItem("filter:starred")
       order: @getItem("filter:order", "ascending")
 
-    Object.merge(defaults, @getQueryString().filter)
+    support.merge(defaults, @getQueryString().filter)
 
   restorePlaylist: ->
     @getItem("playlist:items", [])
@@ -207,7 +209,7 @@ module.exports = React.createClass
     @state.playlist.get(@state.playlist.indexOf(@state.activePlaylistItem) + offset)
 
   reloadAlbums: (->
-    query = Object.merge
+    query = support.merge
       name: @state.filter.query
       starred: @state.filter.starred
     , @state.filter.filter

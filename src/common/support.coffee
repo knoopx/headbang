@@ -3,6 +3,9 @@ ngram = require('ngram-fingerprint')
 
 
 support =
+  merge: (a, b) ->
+    Object.merge(Object.merge({}, a), b)
+
   fingerprint: (value) ->
     ngram(2, support.normalize(value))
 

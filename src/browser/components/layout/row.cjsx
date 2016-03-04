@@ -1,5 +1,7 @@
 React = require("react")
 
+support = require("../../../common/support")
+
 module.exports = React.createClass
   displayName: "Row"
   mixins: [require('react-immutable-render-mixin')]
@@ -22,4 +24,4 @@ module.exports = React.createClass
     minWidth: 0
 
   render: ->
-    <div className="row" {...@props} style={Object.merge(@getStyle(), @props.style)}/>
+    <div className="row" {...@props} style={support.merge(@getStyle(), @props.style)}/>

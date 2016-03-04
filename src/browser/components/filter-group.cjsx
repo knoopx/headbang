@@ -4,6 +4,7 @@ levenshtein = require('fast-levenshtein')
 
 AlbumStore = require("../store/album-store")
 filter = require("../../common/filter")
+support = require("../../common/support")
 
 {Column, Row, Gutter, Divider} = require("./layout")
 Spinner = require("./spinner")
@@ -119,7 +120,7 @@ module.exports = React.createClass
     @handleDismissSuggestions =>
       @notifyChange
         query: null
-        filter: Object.merge(@state.filter, f)
+        filter: support.merge(@state.filter, f)
 
   handleDismissSuggestions: (fn) ->
     @setState(suggestions: [], fn)
@@ -147,7 +148,7 @@ module.exports = React.createClass
       clearTimeout(@suggestTimeout) if @suggestTimeout?
       @suggestTimeout = setTimeout =>
         if query?.length > 1
-          suggestions = @buildSuggestions(filter(AlbumStore)(Object.merge(starred: @state.starred, @state.filter)))
+          suggestions = @buildSuggestions(filter(AlbumStore)(support.merge(starred: @state.starred, @state.filter)))
           matches = filter(suggestions)(value: query)
             .sortBy (s) => levenshtein.get(s.value, query)
             .take(10)
@@ -157,9 +158,7 @@ module.exports = React.createClass
             suggestions: matches.map (match) =>
               f = Object.clone(@state.filter)
               f[match.type] = match.value
-              Object.merge match,
-                count: filter(AlbumStore)(Object.merge({starred: @state.starred}, f)).count()
-              match
+              support.merge match, count: filter(AlbumStore)(support.merge({starred: @state.starred}, f)).count()
           , =>
             @suggestTimeout = null
         else
@@ -183,7 +182,7 @@ module.exports = React.createClass
     @refs.query.focus()
 
   notifyChange: (changes = {}) ->
-    @props.onChange?(Object.merge(Object.select(@state, ["filter", "query", "starred", "order"]), changes))
+    @props.onChange?(support.merge(Object.select(@state, ["filter", "query", "starred", "order"]), changes))
 
   removeFilter: (type) ->
     @notifyChange(filter: Object.reject(@state.filter, [type]))

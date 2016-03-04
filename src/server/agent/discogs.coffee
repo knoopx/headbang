@@ -3,7 +3,7 @@ Axios = require("axios")
 rateLimit = require('timetrickle')(20, 60000)
 Genre = require("../model/genre")
 TrackStore = require("../store/track-store")
-Support = require("../../common/support")
+support = require("../../common/support")
 version = require("../../package.json").version
 
 module.exports = (apiKey) ->
@@ -16,8 +16,8 @@ module.exports = (apiKey) ->
     return Q.reject(new Error("already looked up on discogs")) if album.discogs? and not force
 
     query =
-      release_title: Support.querify(album.name)
-      artist: Support.querify(album.artistName[0])
+      release_title: support.querify(album.name)
+      artist: support.querify(album.artistName[0])
       format: album.tag.join(" ")
       year: album.year.join(" ")
       type: "release"
@@ -27,10 +27,10 @@ module.exports = (apiKey) ->
       match = res.results[0]
       artwork: match.thumb
       country: [match.country]
-      year: [Support.parseYear(match.year)].compact()
+      year: [support.parseYear(match.year)].compact()
       tag: match.format
-      genre: (match.genre || []).concat(match.style || []).map(Support.parseGenre).compact().unique()
-      label: (match.label || []).map(Support.parseString).compact().map(Support.normalize)
+      genre: (match.genre || []).concat(match.style || []).map(support.parseGenre).compact().unique()
+      label: (match.label || []).map(support.parseString).compact().map(support.normalize)
       discogs: Date.now()
 
   performRequest: (query) ->

@@ -5,6 +5,7 @@ Path = require("path")
 BodyParser = require('body-parser')
 Compression = require('compression')
 
+support = require("../common/support")
 AlbumStore = require("./store/album-store")
 TrackStore = require("./store/track-store")
 
@@ -17,7 +18,7 @@ Router.use Express.static(Path.resolve(__dirname, "../browser"))
 
 Router.patch "/albums/:id", Compression(), (request, response) ->
   if album = AlbumStore.get(request.params.id)
-  then response.json(AlbumStore.inject(Object.merge(album, request.body)))
+  then response.json(AlbumStore.inject(support.merge(album, request.body)))
   else response.status(404)
 
 Router.get "/tracks/:id/stream", (request, response) ->

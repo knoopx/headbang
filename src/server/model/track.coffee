@@ -1,5 +1,6 @@
 validate = require("validate.js")
 
+support = require("../../common/support")
 Store = require("../store")
 TrackStore = require("../store/track-store")
 
@@ -16,7 +17,7 @@ module.exports =
     defaults =
       artistName: []
 
-    props = Object.merge(defaults, props)
+    props = support.merge(defaults, props)
     errors = validate(props, @validations)
     throw new Error("Invalid attributes: #{JSON.stringify(errors)}") if errors?
     props

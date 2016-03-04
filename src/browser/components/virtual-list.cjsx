@@ -1,6 +1,8 @@
 React = require('react')
 Immutable = require("immutable")
 ImmutablePropTypes = require('react-immutable-proptypes')
+support = require("../../common/support")
+
 
 module.exports = React.createClass
   displayName: 'VirtualList'
@@ -67,7 +69,7 @@ module.exports = React.createClass
     # no items to render
     return state if renderStats.itemsCount == 0
 
-    Object.merge state,
+    support.merge state,
       items: props.items.slice(renderStats.firstItemIndex, renderStats.lastItemIndex + 1)
       firstItemIndex: renderStats.firstItemIndex
       bufferStart: renderStats.firstItemIndex * props.itemHeight
