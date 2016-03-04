@@ -4,6 +4,7 @@ require("source-map-support/register")
 q = require("q")
 commander = require('commander')
 chokidar = require('chokidar')
+async = require("async")
 
 Server = require("./server")
 Scanner = require("./server/service/scanner")
@@ -16,13 +17,18 @@ Album = require("./server/model/album")
 AlbumStore = require("./server/store/album-store")
 Support = require("./common/support")
 
+queue = async.queue ((fn, done) -> fn(done)), 5
+
 scanAndIndex = (path, agents) ->
-  Indexer.index(path, commander.force).then (album) ->
-    q.all agents.map (agent) ->
-      agent.lookup(album, commander.force).then (attrs) ->
-        AlbumStore.inject(Album.merge(album, attrs))
-  .catch (err) ->
-    console.log(err.stack)
+  queue.push (done) ->
+    Indexer.index(path, commander.force).then (album) ->
+      done()
+      q.all agents.map (agent) ->
+        agent.lookup(album, commander.force).then (attrs) ->
+          AlbumStore.inject(Album.merge(album, attrs))
+    .catch (err) ->
+      done()
+      console.log(err.stack)
 
 removeFromIndex = (path) ->
   AlbumStore.where(path: path).forEach (album) ->
