@@ -2,8 +2,6 @@ Q = require("q")
 Axios = require("axios")
 rateLimit = require('timetrickle')(20, 60000)
 Genre = require("../model/genre")
-Job = require("../model/job")
-JobStore = require("../store/job-store")
 TrackStore = require("../store/track-store")
 Support = require("../../common/support")
 version = require("../../package.json").version
@@ -38,10 +36,8 @@ module.exports = (apiKey) ->
   performRequest: (query) ->
     defer = Q.defer()
     rateLimit ->
-      job = JobStore.inject(Job.build(message: "Looking up on discogs: #{[query.release_title, query.artist].compact().join(" - ")}"))
       Axios.get("https://api.discogs.com/database/search", params: query, headers: headers)
       .then (res) ->
-        JobStore.eject(job)
         defer.resolve(res.data)
       .catch(defer.reject)
     defer.promise

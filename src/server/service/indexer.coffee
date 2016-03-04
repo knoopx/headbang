@@ -7,8 +7,6 @@ FQ = require("../service/fq")
 Scanner = require("./scanner")
 Genre = require("../model/genre")
 
-Job = require("../model/job")
-JobStore = require("../store/job-store")
 Album = require("../model/album")
 AlbumStore = require("../store/album-store")
 Track = require("../model/track")
@@ -65,11 +63,9 @@ indexAlbum = (path, prevAlbum) ->
 
 module.exports =
   index: (path, force = false) ->
-    job = JobStore.inject(Job.build(message: "Indexing #{path}"))
     Album.load(path).then (album) ->
       AlbumStore.inject(album)
       if force
       then indexAlbum(path, album)
       else album
     .catch -> indexAlbum(path)
-    .fin -> JobStore.eject(job)

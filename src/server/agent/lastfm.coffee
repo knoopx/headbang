@@ -3,8 +3,6 @@ Axios = require("axios")
 rateLimit = require('timetrickle')(10, 1000)
 
 Genre = require("../model/genre")
-Job = require("../model/job")
-JobStore = require("../store/job-store")
 Support = require("../../common/support")
 
 parseArray = (value) -> if Array.isArray(value) then value || [] else []
@@ -37,10 +35,7 @@ module.exports = (apiKey) ->
   performRequest: (query) ->
     defer = Q.defer()
     rateLimit ->
-      job = JobStore.inject(Job.build(message: "Looking up on last.fm: #{[query.album, query.artist].compact().join(" - ")}"))
-
       Axios.get("http://ws.audioscrobbler.com/2.0/", params: query).then (response) ->
-        JobStore.eject(job)
         defer.resolve(response.data)
       , defer.reject
 

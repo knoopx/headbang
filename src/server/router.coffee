@@ -6,7 +6,6 @@ BodyParser = require('body-parser')
 Compression = require('compression')
 
 AlbumStore = require("./store/album-store")
-JobStore = require("./store/job-store")
 TrackStore = require("./store/track-store")
 
 Router = Express()
@@ -28,9 +27,6 @@ Router.get "/tracks/:id/stream", (request, response) ->
 
 Router.get "/albums", Compression(), (request, response) ->
   response.json(AlbumStore.where(request.query).toArray())
-
-Router.get "/jobs", Compression(), (request, response) ->
-  response.json(JobStore.where(request.query).toArray())
 
 Router.get "/tracks", (request, response) ->
   if album = AlbumStore.get(request.query.albumId)

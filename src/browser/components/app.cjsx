@@ -6,7 +6,6 @@ firstBy = require('thenby')
 
 AlbumStore = require("../store/album-store")
 TrackStore = require("../store/track-store")
-JobStore = require("../store/job-store")
 filter = require("../../common/filter")
 
 {Column, Row, Gutter, Divider} = require("./layout")
@@ -18,7 +17,6 @@ Spinner = require("./spinner")
 List = require("./list")
 ListItem = require("./list-item")
 FilterGroup = require("./filter-group")
-JobList = require("./job-list")
 
 module.exports = React.createClass
   displayName: "App"
@@ -64,7 +62,6 @@ module.exports = React.createClass
 
       isConnected: false
       albums: Immutable.Map()
-      jobs: Immutable.Map()
       playlist: Immutable.List(playlist)
       filter: @restoreFilter()
       activePlaylistItem: playlist[playlistIndex]
@@ -82,7 +79,6 @@ module.exports = React.createClass
 
   componentWillUnmount: ->
     AlbumStore.off "change", @reloadAlbums
-    JobStore.off "change", @reloadJobs
 
   render: ->
     if @state.isConnected
@@ -115,9 +111,6 @@ module.exports = React.createClass
             <Row><PlayList ref="playlist" activeItem={@state.activePlaylistItem} items={@state.playlist} onSelect={@handlePlaylistItemSelected}/></Row>
           </Column>
         </Row>
-
-        {<Divider /> if @state.jobs.count() > 0}
-        {<JobList jobs={@state.jobs} /> if @state.jobs.count() > 0}
       </Column>
     else
       <Row alignItems="center">
@@ -129,16 +122,10 @@ module.exports = React.createClass
   handleConnect: ->
     io.on "inject:album", @handleAlbumInjected
     io.on "eject:album", @handleAlbumEjected
-    io.on "inject:job", @handleJobInjected
-    io.on "eject:job", @handleJobEjected
 
     AlbumStore.fetch().then =>
       @reloadAlbums()
       AlbumStore.on "change", @reloadAlbums
-
-    JobStore.fetch().then =>
-      @reloadJobs()
-      JobStore.on "change", @reloadJobs
 
     @setState isConnected: true, => @refs.filter.focus()
 
@@ -148,21 +135,12 @@ module.exports = React.createClass
   handleAlbumEjected: (album) ->
     AlbumStore.eject(album)
 
-  handleJobInjected: (job) ->
-    JobStore.inject(job)
-
-  handleJobEjected: (job) ->
-    JobStore.eject(job)
-
   handleDisconnect: ->
     io.off "inject:album", @handleAlbumInjected
     io.off "eject:album", @handleAlbumEjected
-    io.off "inject:job", @handleJobInjected
-    io.off "eject:job", @handleJobEjected
     @setState
       isConnected: false
       albums: Immutable.Map()
-      jobs: Immutable.Map()
 
   handleFilterChange: (filter) ->
     @setItem("filter:starred", filter.starred)
@@ -235,8 +213,4 @@ module.exports = React.createClass
     , @state.filter.filter
     orderFn = @props.orderFn[@state.filter.order]
     @setState(albums: AlbumStore.where(query).sort(orderFn))
-  ).debounce(50)
-
-  reloadJobs: (->
-    @setState(jobs: JobStore.map)
   ).debounce(50)
