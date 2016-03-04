@@ -58,10 +58,10 @@ module.exports = React.createClass
     @state.audio.removeEventListener("ended", @handleEnded)
 
   handleDataLoaded: ->
-    @setState(duration: @state.audio.duration)
+    @setState (state) -> duration: state.audio.duration
 
   handleTimeUpdate: ->
-    @setState(time: @state.audio.currentTime)
+    @setState (time) -> time: @state.audio.currentTime
 
   handlePlay: ->
     @setState(isPlaying: true)

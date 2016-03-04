@@ -53,12 +53,12 @@ module.exports = React.createClass
 
   selectPrev: ->
     if @state.activeIndex > 0
-    then @setState(activeIndex: @state.activeIndex - 1)
-    else @setState(activeIndex: @state.suggestions.count() - 1)
+    then @setState (state) -> activeIndex: state.activeIndex - 1
+    else @setState (state) -> activeIndex: state.suggestions.count() - 1
 
   selectNext: ->
     if @state.activeIndex < @state.suggestions.count() - 1
-    then @setState(activeIndex: @state.activeIndex + 1)
+    then @setState (state) -> activeIndex: state.activeIndex + 1
     else @setState(activeIndex: 0)
 
   render: ->
