@@ -159,7 +159,10 @@ module.exports = React.createClass
     io.off "eject:album", @handleAlbumEjected
     io.off "inject:job", @handleJobInjected
     io.off "eject:job", @handleJobEjected
-    @setState isConnected: false
+    @setState
+      isConnected: false
+      albums: Immutable.Map()
+      jobs: Immutable.Map()
 
   handleFilterChange: (filter) ->
     @setItem("filter:starred", filter.starred)
