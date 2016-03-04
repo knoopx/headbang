@@ -4,10 +4,10 @@ validate = require("validate.js")
 
 FQ = require("../service/fq")
 
-AlbumName = require("./../support/album-name")
-AlbumStore = require("./../store/album-store")
+AlbumName = require("../support/album-name")
+AlbumStore = require("../store/album-store")
 Track = require("./track")
-TrackStore = require("./../store/track-store")
+TrackStore = require("../store/track-store")
 Support = require("../../common/support")
 merge = require("../../common/merge")
 

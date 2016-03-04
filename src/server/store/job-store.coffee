@@ -1,2 +1,2 @@
-Store = require("./../../common/store")
+Store = require("../../common/store")
 module.exports = new Store()

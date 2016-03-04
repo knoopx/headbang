@@ -1,7 +1,7 @@
 validate = require("validate.js")
 
-Store = require("./../store")
-TrackStore = require("./../store/track-store")
+Store = require("../store")
+TrackStore = require("../store/track-store")
 
 module.exports =
   validations:

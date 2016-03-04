@@ -2,7 +2,7 @@ Q = require("q")
 Axios = require("axios")
 rateLimit = require('timetrickle')(10, 1000)
 
-Genre = require("./../model/genre")
+Genre = require("../model/genre")
 Job = require("../model/job")
 JobStore = require("../store/job-store")
 Support = require("../../common/support")

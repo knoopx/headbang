@@ -1,12 +1,12 @@
 Q = require("q")
 Axios = require("axios")
 rateLimit = require('timetrickle')(20, 60000)
-Genre = require("./../model/genre")
+Genre = require("../model/genre")
 Job = require("../model/job")
 JobStore = require("../store/job-store")
 TrackStore = require("../store/track-store")
 Support = require("../../common/support")
-version = require("../../../../package.json").version
+version = require("../../package.json").version
 
 module.exports = (apiKey) ->
   headers =
