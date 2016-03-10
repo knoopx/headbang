@@ -31,8 +31,7 @@ Router.get "/albums", Compression(), (request, response) ->
 
 Router.get "/tracks", (request, response) ->
   if album = AlbumStore.get(request.query.albumId)
-    album.playCount += 1
-    AlbumStore.inject(album)
+    AlbumStore.inject(support.merge(album, playCount: album.playCount + 1))
 
   response.json(TrackStore.where(request.query).toArray())
 

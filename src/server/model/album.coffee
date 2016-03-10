@@ -61,6 +61,7 @@ module.exports =
       year: merge.fn.replaceIfSourceIsEmpty
       lastfm: merge.fn.replaceUnlessTargetIsEmpty
       discogs: merge.fn.replaceUnlessTargetIsEmpty
+      playCount: merge.fn.replaceUnlessTargetIsEmpty
 
   dump: (obj) ->
     throw new Error("Unexpected argument") unless obj.id? and obj.path?
