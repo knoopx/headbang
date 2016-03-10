@@ -4,7 +4,6 @@ validate = require("validate.js")
 
 FQ = require("../service/fq")
 
-AlbumName = require("../support/album-name")
 AlbumStore = require("../store/album-store")
 Track = require("./track")
 TrackStore = require("../store/track-store")

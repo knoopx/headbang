@@ -1,7 +1,6 @@
 Q = require("q")
 Axios = require("axios")
 rateLimit = require('timetrickle')(20, 60000)
-Genre = require("../model/genre")
 TrackStore = require("../store/track-store")
 support = require("../../common/support")
 version = require("../../package.json").version

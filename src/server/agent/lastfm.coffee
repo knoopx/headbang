@@ -2,7 +2,6 @@ Q = require("q")
 Axios = require("axios")
 rateLimit = require('timetrickle')(10, 1000)
 
-Genre = require("../model/genre")
 support = require("../../common/support")
 
 parseArray = (value) -> if Array.isArray(value) then value || [] else []

@@ -7,7 +7,6 @@ chokidar = require('chokidar')
 async = require("async")
 
 Server = require("./server")
-Scanner = require("./server/service/scanner")
 Indexer = require("./server/service/indexer")
 
 FS = require("fs")

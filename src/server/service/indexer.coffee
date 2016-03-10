@@ -4,15 +4,12 @@ Mime = require("mime")
 MD5 = require("crypto/md5")
 
 FQ = require("../service/fq")
-Scanner = require("./scanner")
-Genre = require("../model/genre")
 
 Album = require("../model/album")
 AlbumStore = require("../store/album-store")
 Track = require("../model/track")
 TrackStore = require("../store/track-store")
 ID3 = require("../id3")
-AlbumName = require("../support/album-name")
 support = require("../../common/support")
 
 readdir = (path) -> Q.nfcall(FQ.readdir.bind(FQ), path)
