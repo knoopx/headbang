@@ -140,9 +140,10 @@ module.exports = React.createClass
   handleDisconnect: ->
     io.off "inject:album", @handleAlbumInjected
     io.off "eject:album", @handleAlbumEjected
-    @setState
-      isConnected: false
-      albums: Immutable.Map()
+    if @isMounted()
+      @setState
+        isConnected: false
+        albums: Immutable.Map()
 
   handleFilterChange: (filter) ->
     @setItem("filter:starred", filter.starred)
@@ -214,5 +215,5 @@ module.exports = React.createClass
       starred: @state.filter.starred
     , @state.filter.filter
     orderFn = @props.orderFn[@state.filter.order]
-    @setState(albums: AlbumStore.where(query).sort(orderFn))
+    @setState(albums: AlbumStore.where(query).sort(orderFn)) if @isMounted()
   ).debounce(50)
