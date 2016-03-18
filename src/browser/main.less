@@ -43,3 +43,12 @@ body, #root {
     outline: none;
   }
 }
+
+.fade-appear {
+  opacity: 0;
+
+  &-active {
+    opacity: 1;
+    transition: opacity 200ms ease-in;
+  }
+}

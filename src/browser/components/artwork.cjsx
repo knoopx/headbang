@@ -1,6 +1,7 @@
 React = require("react")
 async = require("async")
 Spinner = require("./spinner")
+ReactCSSTransitionGroup = require('react-addons-css-transition-group')
 
 queue = async.queue (fn, done) ->
   fn(done)
@@ -35,7 +36,9 @@ ArtworkImage = React.createClass
     if @state.isLoading
       <Spinner size={Math.round(@props.size * 0.5)} />
     else
-      <div className="artwork-image" style={backgroundImage: "url('#{@props.src}')", width: "#{@props.size}px", height: "#{@props.size}px"}></div>
+      <ReactCSSTransitionGroup transitionName="fade" transitionEnterTimeout={0} transitionLeaveTimeout={0} transitionAppear={true} transitionAppearTimeout={0}>
+        <div className="artwork-image" style={backgroundImage: "url('#{@props.src}')", width: "#{@props.size}px", height: "#{@props.size}px"}></div>
+      </ReactCSSTransitionGroup>
 
 module.exports = React.createClass
   displayName: "Artwork"
