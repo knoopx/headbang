@@ -12,12 +12,12 @@ class Store
   off: (event, fn) -> @eventEmitter.off(event, fn)
   emit: (event, payload) -> @eventEmitter.emit(event, payload)
 
-  toArray: -> @map.toArray()
   filter: (opts) -> @map.filter(opts)
   where: (query) -> filter(@map)(query)
   sort: (opts) -> @map.sort(opts)
   sortBy: (opts) -> @map.sortBy(opts)
   forEach: (fn) -> @map.forEach(fn)
+  map: (fn) -> @map.map(fn)
 
   get: (id) -> @map.get(id)
 

@@ -66,7 +66,7 @@ module.exports =
   dump: (obj) ->
     throw new Error("Unexpected argument") unless obj.id? and obj.path?
     path = Path.join(obj.path, ".headbang")
-    require("fs").writeFileSync(path, JSON.stringify(support.merge(tracks: TrackStore.toArray().filter(albumId: obj.id), obj)))
+    require("fs").writeFileSync(path, JSON.stringify(support.merge(tracks: TrackStore.where(albumId: obj.id), obj)))
 
   load: (path) ->
     Q.Promise (resolve, reject) ->

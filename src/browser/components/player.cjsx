@@ -7,12 +7,49 @@ Button = require("./button")
 ButtonGroup = require("./button-group")
 {Column, Row, Gutter, Divider} = require("./layout")
 
+SeekBar = React.createClass
+  displayName: "SeekBar"
+  mixins: [require('react-addons-pure-render-mixin')]
+  render: ->
+    <Column>
+      <div className="range">
+        <span className="time">{Format.duration(@props.time)}</span>
+        <Gutter/>
+        <input max={@props.duration} min="0" value={@props.time} onChange={@handleTimeSeek} type="range" tabIndex="-1" />
+        <Gutter/>
+        <span className="duration">{Format.duration(@props.duration || 0)}</span>
+        <Gutter/>
+      </div>
+    </Column>
+
+PlayerButtons = React.createClass
+  displayName: "PlayerButtons"
+  mixins: [require('react-addons-pure-render-mixin')]
+  render: ->
+    <Column flex="initial">
+      <ButtonGroup>
+        <Button onClick={@props.onPlayPrev}><i className="fa fa-backward" tabIndex="-1"></i></Button>
+        <Button onClick={@playOrPause} tabIndex="-1">{@renderPlayOrPauseIcon()}</Button>
+        <Button onClick={@props.onPlayNext} tabIndex="-1"><i className="fa fa-forward"></i></Button>
+      </ButtonGroup>
+    </Column>
+
+  playOrPause: ->
+    if @props.isPlaying
+    then @props.onPause()
+    else @props.onPlay()
+
+  renderPlayOrPauseIcon: ->
+    if @props.isPlaying
+      <i className="fa fa-pause"></i>
+    else
+      <i className="fa fa-play"></i>
+
 module.exports = React.createClass
   displayName: "Player"
 
   mixins: [
     require("./mixins/key-bindings")
-    require('react-immutable-render-mixin')
   ]
 
   propTypes:
@@ -81,11 +118,6 @@ module.exports = React.createClass
   load: (src) ->
     @state.audio.src = src
 
-  playOrPause: ->
-    if @state.isPlaying
-    then @state.audio.pause()
-    else @state.audio.play()
-
   handleTimeSeek: (e) ->
     @state.audio.currentTime = e.target.value
 
@@ -94,33 +126,10 @@ module.exports = React.createClass
       <Row padding="10px">
         <Column>
           <Row alignItems="center">
-            <Column>
-              <div className="range">
-                <span className="time">{Format.duration(@state.time)}</span>
-                <Gutter/>
-                <input max={@state.duration} min="0" value={@state.time} onChange={@handleTimeSeek} type="range" tabIndex="-1" />
-                <Gutter/>
-                <span className="duration">{Format.duration(@state.duration || 0)}</span>
-                <Gutter/>
-              </div>
-            </Column>
-
+            <SeekBar onSeek={@handleTimeSeek} time={@state.time} duration={@state.duration} />
             <Gutter/>
-
-            <Column flex="initial">
-              <ButtonGroup>
-                <Button onClick={@props.onPlayPrev}><i className="fa fa-backward" tabIndex="-1"></i></Button>
-                <Button onClick={@playOrPause} tabIndex="-1">{@renderPlayOrPauseIcon()}</Button>
-                <Button onClick={@props.onPlayNext} tabIndex="-1"><i className="fa fa-forward"></i></Button>
-              </ButtonGroup>
-            </Column>
+            <PlayerButtons isPlaying={@state.isPlaying} onPlay={=> @props.audio.play()} onPause={=> @props.audio.pause()} onPlayPrev={@props.onPlayPrev} onPlayNext={@props.onPlayNext} />
           </Row>
         </Column>
       </Row>
     </Column>
-
-  renderPlayOrPauseIcon: ->
-    if @state.isPlaying
-      <i className="fa fa-pause"></i>
-    else
-      <i className="fa fa-play"></i>
