@@ -27,7 +27,7 @@ class Store
       @map = newMap
       @emit("inject", newObj)
       @emit("change")
-      newObj
+    newObj
 
   unset: (id) ->
     obj = @map.get(id)
@@ -35,7 +35,7 @@ class Store
     unless Immutable.is(@map, newMap)
       @emit("eject", obj)
       @emit("change")
-      obj
+    obj
 
   inject: (newObj) ->
     if Object.isObject(newObj)
@@ -52,6 +52,6 @@ class Store
       @unset(obj)
 
   ejectAll: ->
-    @map.forEach(@eject)
+    @map.map(@eject)
 
 module.exports = Store

@@ -34,7 +34,7 @@ module.exports = React.createClass
     albums: Immutable.Map()
     filter:
       starred: null
-      query: null
+      query: ""
       filter: {}
       order: null
 
@@ -74,7 +74,7 @@ module.exports = React.createClass
       <Gutter size={6} />
       {Object.keys(@state.filter).map((key) => @renderFilter(key, @state.filter[key]))}
       {<Gutter /> if Object.size(@state.filter) > 0}
-      <input ref="query" placeholder="type to filter..." type="text" onKeyDown={@handleKeyDown} valueLink={value: @state.query, requestChange: @handleQueryChange} />
+      <input ref="query" placeholder="type to filter..." type="text" onKeyDown={@handleKeyDown} value={@state.query} onChange={@handleQueryChange} />
       <Gutter />
       <div className="text-right text-muted"><em>{@state.albums.count()} album(s)</em></div>
       <Gutter />
@@ -126,7 +126,7 @@ module.exports = React.createClass
     @setState(suggestions: [], fn)
 
   handleKeyDown: (e) ->
-    @refs.suggestions?.handleKeyDown(e)
+    @refs.suggestions?.getInstance().handleKeyDown(e)
     unless e.defaultPrevented
       switch e.key
         when "Enter"
@@ -139,7 +139,8 @@ module.exports = React.createClass
             @removeFilter(Object.keys(@state.filter).last()) if Object.size(@state.filter) > 0
             e.preventDefault()
 
-  handleQueryChange: (query) ->
+  handleQueryChange: (e) ->
+    query = e.target.value
     @setState
       isLoading: true
       suggestions: []

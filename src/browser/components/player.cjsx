@@ -15,7 +15,7 @@ SeekBar = React.createClass
       <div className="range">
         <span className="time">{Format.duration(@props.time)}</span>
         <Gutter/>
-        <input max={@props.duration} min="0" value={@props.time} onChange={@handleTimeSeek} type="range" tabIndex="-1" />
+        <input max={@props.duration} min={0} value={@props.time} onChange={@props.onSeek} type="range" tabIndex="-1" />
         <Gutter/>
         <span className="duration">{Format.duration(@props.duration || 0)}</span>
         <Gutter/>
@@ -79,6 +79,7 @@ module.exports = React.createClass
     @bindKey "space", (e) =>
       @playOrPause()
       e.preventDefault()
+
     @bindKey "shift+right", (e) =>
       @props.onPlayNext()
       e.preventDefault()

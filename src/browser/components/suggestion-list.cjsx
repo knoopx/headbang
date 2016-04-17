@@ -4,11 +4,12 @@ List = require('./list')
 ListItem = require('./list-item')
 {Column, Row, Gutter, Divider} = require("./layout")
 
-module.exports = React.createClass
+onClickOutside = require('react-onclickoutside')
+
+module.exports = onClickOutside React.createClass
   displayName: "SuggestionList"
 
   mixins: [
-    require('react-onclickoutside')
     require('react-immutable-render-mixin')
   ]
 
