@@ -122,6 +122,12 @@ module.exports = React.createClass
   handleTimeSeek: (e) ->
     @state.audio.currentTime = e.target.value
 
+  onPause: () ->
+    @props.audio.pause()
+
+  onPlay: () ->
+    @props.audio.play()
+
   render: ->
     <Column>
       <Row padding="10px">
@@ -129,7 +135,7 @@ module.exports = React.createClass
           <Row alignItems="center">
             <SeekBar onSeek={@handleTimeSeek} time={@state.time} duration={@state.duration} />
             <Gutter/>
-            <PlayerButtons isPlaying={@state.isPlaying} onPlay={=> @props.audio.play()} onPause={=> @props.audio.pause()} onPlayPrev={@props.onPlayPrev} onPlayNext={@props.onPlayNext} />
+            <PlayerButtons isPlaying={@state.isPlaying} onPlay={@onPlay} onPause={@onPause} onPlayPrev={@props.onPlayPrev} onPlayNext={@props.onPlayNext} />
           </Row>
         </Column>
       </Row>

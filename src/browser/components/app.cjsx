@@ -172,12 +172,12 @@ module.exports = React.createClass
       if shouldClearPlaylist
         @clearPlaylist =>
           @setPlaylist(items)
-          @play(items[0])
+          @play(items[0]) if items.length > 0
       else
         @setPlaylist(@state.playlist.concat(items))
 
   handlePlaylistItemSelected: (item) ->
-    @play(item)
+    @play(item) if item?
 
   handlePlayNext: ->
     if item = @relativePlaylistItem()

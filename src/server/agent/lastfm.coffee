@@ -32,10 +32,8 @@ module.exports = (apiKey) ->
         Q.reject(new Error("no match: #{JSON.stringify(Object.select(query, ['artist', 'album']))}"))
 
   performRequest: (query) ->
-    defer = Q.defer()
-    rateLimit ->
-      Axios.get("http://ws.audioscrobbler.com/2.0/", params: query).then (response) ->
-        defer.resolve(response.data)
-      , defer.reject
-
-    defer.promise
+    Q.Promise (resolve, reject) ->
+      rateLimit ->
+        Axios.get("http://ws.audioscrobbler.com/2.0/", params: query)
+        .then (response) -> resolve(response.data)
+        .catch(reject)

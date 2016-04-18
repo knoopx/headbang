@@ -1,7 +1,6 @@
 React = require('react')
 Immutable = require("immutable")
 ImmutablePropTypes = require('react-immutable-proptypes')
-support = require("../../common/support")
 
 
 module.exports = React.createClass
@@ -20,17 +19,18 @@ module.exports = React.createClass
     @getVirtualState(@props)
 
   componentWillReceiveProps: (nextProps) ->
-    @setState(@getVirtualState(nextProps))
+    window.requestAnimationFrame =>
+      @setState(@getVirtualState(nextProps))
 
   componentDidMount: ->
-    @refs.container.addEventListener 'scroll', @handleScroll
-    @setState(@getVirtualState(@props))
+    window.addEventListener 'resize', @handleUpdate
 
   componentWillUnmount: ->
-    @refs.container.removeEventListener 'scroll', @handleScroll
+    window.removeEventListener 'resize', @handleUpdate
 
-  handleScroll: ->
-    @setState(@getVirtualState(@props))
+  handleUpdate: ->
+    window.requestAnimationFrame =>
+      @setState(@getVirtualState(@props))
 
   visibleItems: ->
     @state.items
@@ -39,43 +39,25 @@ module.exports = React.createClass
     @refs.container?.scrollTop = 0
 
   getStyle: ->
-    height: @state.height - @state.bufferStart
-    transform: "translateZ(0) translateY(#{@state.bufferStart}px)"
+    height: @state.height - @state.offset
+    transform: "translateZ(0) translateY(#{@state.offset}px)"
 
   render: ->
     <div className="virtual-list">
-      <div className="virtual-list-inner" ref="container">
+      <div className="virtual-list-inner" ref="container" onScroll={@handleUpdate}>
         <div className="list" {...@props} style={@getStyle()}>
-          {@state.items.map(@props.renderItem).toArray()}
+          {@props.items.slice(@state.firstItemIndex, @state.lastItemIndex + 1).map(@props.renderItem).toArray()}
         </div>
       </div>
     </div>
 
   getVirtualState: (props) ->
-    state =
-      items: Immutable.List()
-      bufferStart: 0
-      height: props.items.count() * props.itemHeight
-      clientHeight: @refs.container?.clientHeight || -1
-
-    # no space to render
-    return state if state.clientHeight <= 0
-
-    # early return if nothing to render
-    return state if props.items.count() == 0 or props.itemHeight <= 0
-
-    renderStats = @getItems(@refs.container.scrollTop, @refs.container.clientHeight, props.itemHeight, props.items.count())
-
-    # no items to render
-    return state if renderStats.itemsCount == 0
-
-    support.merge state,
-      items: props.items.slice(renderStats.firstItemIndex, renderStats.lastItemIndex + 1)
-      firstItemIndex: renderStats.firstItemIndex
-      bufferStart: renderStats.firstItemIndex * props.itemHeight
+    @getItems(@refs.container?.scrollTop, @refs.container?.clientHeight || -1, props.itemHeight, props.items.count())
 
   getItems: (viewTop, viewHeight, itemHeight, itemCount) ->
-    if itemCount == 0 or itemHeight == 0
+    if viewHeight <= 0 or itemCount <= 0 or itemHeight <= 0 or itemCount <= 0
+      height: 0
+      offset: 0
       firstItemIndex: -1
       lastItemIndex: -1
       itemsCount: 0
@@ -91,6 +73,8 @@ module.exports = React.createClass
       lastItemIndex = Math.ceil(listViewBox.bottom / itemHeight) - 1
       itemsCount = lastItemIndex - firstItemIndex + 1
 
+      height: listHeight
       firstItemIndex: firstItemIndex
       lastItemIndex: lastItemIndex
+      offset: firstItemIndex * itemHeight
       itemsCount: itemsCount

@@ -1,7 +1,8 @@
-AbstractStore = require("../common/store")
 Axios = require("axios")
 
-class Store extends AbstractStore
+Store = require("./store")
+
+class RemoteStore extends Store
   constructor: (@endpoint, identityKey = "id") ->
     super(identityKey)
 
@@ -10,4 +11,4 @@ class Store extends AbstractStore
       res.data.forEach (obj) => @inject(obj)
       res.data
 
-module.exports = Store
+module.exports = RemoteStore

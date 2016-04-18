@@ -1,2 +1,2 @@
-Store = require("../store")
-module.exports = new Store("/albums")
+RemoteStore = require("../../common/remote-store")
+module.exports = new RemoteStore("/albums")

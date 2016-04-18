@@ -1,7 +1,6 @@
 Q = require("q")
 Axios = require("axios")
 rateLimit = require('timetrickle')(20, 60000)
-TrackStore = require("../store/track-store")
 support = require("../../common/support")
 version = require("../../package.json").version
 
@@ -33,10 +32,8 @@ module.exports = (apiKey) ->
       discogs: Date.now()
 
   performRequest: (query) ->
-    defer = Q.defer()
-    rateLimit ->
-      Axios.get("https://api.discogs.com/database/search", params: query, headers: headers)
-      .then (res) ->
-        defer.resolve(res.data)
-      .catch(defer.reject)
-    defer.promise
+    Q.Promise (resolve, reject) ->
+      rateLimit ->
+        Axios.get("https://api.discogs.com/database/search", params: query, headers: headers)
+        .then (res) -> resolve(res.data)
+        .catch(reject)

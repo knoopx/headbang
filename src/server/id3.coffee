@@ -9,12 +9,11 @@ module.exports =
     @fromStream(FQ.createReadStream(file))
 
   fromStream: (stream) ->
-    defer = Q.defer()
-    parser = mm stream, (err, meta) ->
-      stream.destroy()
-      if err
-      then defer.reject(new Error(err))
-      else defer.resolve(meta)
+    Q.promise (resolve, reject) ->
+      parser = mm stream, (err, meta) ->
+        stream.destroy()
+        if err
+        then reject(new Error(err))
+        else resolve(meta)
 
-    parser.on "done", -> stream.destroy()
-    defer.promise
+      parser.on "done", -> stream.destroy()

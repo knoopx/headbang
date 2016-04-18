@@ -6,4 +6,6 @@ require("./tasks/serve")
 
 gulp = require("gulp")
 
+process.env.NODE_ENV = 'production';
+
 gulp.task 'default', ['serve']
