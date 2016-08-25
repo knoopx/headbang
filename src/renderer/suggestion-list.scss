@@ -1,0 +1,11 @@
+.suggestionList {
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  margin-top: 1px;
+  left: 0;
+  border-radius: 2px;
+  background-color: white;
+  box-shadow: 0 0.5px 0 rgba(0, 0, 0, 0.15), 0 -0.5px 0 rgba(0, 0, 0, 0.15), 0.5px 0 0 rgba(0, 0, 0, 0.15), -0.5px 0 0 rgba(0, 0, 0, 0.15), 0 1px 1px rgba(0, 0, 0, 0.15);
+  z-index: 999;
+}

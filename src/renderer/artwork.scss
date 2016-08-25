@@ -1,0 +1,23 @@
+.artwork {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0, 0, 0, 0.2);
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.artworkImage {
+  background: #dddddd center;
+  background-size: cover;
+}
+
+.transition {
+  opacity: 0;
+}
+
+.transitionActive {
+  opacity: 1;
+  transition: opacity 200ms ease-in;
+}

@@ -1,15 +1,21 @@
 {
-  "presets": ["es2015", "react"],
+  "presets": ["es2015", "stage-0", "react"],
+  "plugins": [
+    "typecheck",
+    "transform-decorators-legacy",
+    "add-module-exports",
+    "lodash"
+  ],
   "env": {
-    "development": {
+    "production": {
+      "presets": ["react-optimize"],
       "plugins": [
-        ["react-transform", {
-          "transforms": [{
-            "transform": "livereactload/babel-transform",
-            "imports": ["react"]
-          }]
-        }]
+        "transform-remove-console",
+        "transform-remove-debugger"
       ]
+    },
+    "development": {
+      "presets": ["react-hmre"]
     }
   }
 }

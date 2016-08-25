@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>headbang</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      (function() {
+        const script = document.createElement('script');
+        script.src = (process.env.NODE_ENV === "production") ? './renderer.js' : 'http://localhost:8080/dist/bundle.js';
+        document.write(script.outerHTML);
+      }());
+    </script>
+  </body>
+</html>

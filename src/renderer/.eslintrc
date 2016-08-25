@@ -1,0 +1,15 @@
+{
+  "plugins": [
+    "react"
+  ],
+  "extends": [
+    "plugin:react/recommended"
+  ],
+  "rules": {
+    "react/jsx-space-before-closing": ["warn", "always"]
+  },
+  "env": {
+    "browser": true,
+    "node": true
+  }
+}

@@ -1,0 +1,24 @@
+.default {
+  -webkit-app-region: no-drag;
+  border-radius: 4px;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #231f20;
+  background: linear-gradient(#ffffff, #f4f4f4);
+  box-shadow: 0 0.5px 0 rgba(0, 0, 0, 0.15), 0 -0.5px 0 rgba(0, 0, 0, 0.15), 0.5px 0 0 rgba(0, 0, 0, 0.15), -0.5px 0 0 rgba(0, 0, 0, 0.15), 0 1px 1px rgba(0, 0, 0, 0.15);
+  height: auto;
+  line-height: 1;
+  font-size: 14px;
+  padding: 8px 16px;
+
+  &:active {
+    background-image: -webkit-linear-gradient(top, #4c98fe 0%, #0564e3 100%);
+    border-top-color: #247fff;
+    border-bottom-color: #003ddb;
+    border-left-color: #125eed;
+    border-right-color: #125eed;
+    color: rgba(255, 255, 255, .9);
+  }
+}

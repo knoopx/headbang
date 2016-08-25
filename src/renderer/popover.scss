@@ -1,0 +1,43 @@
+$background-color: white;
+$border-color: #bbb;
+$arrow-size: 6px;
+
+.container {
+  position: relative;
+}
+
+.popover {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  background-color: $background-color;
+  border: 1px solid $border-color;
+
+  border-radius: 5px;
+  margin-top: 10px;
+
+  &:after, &:before {
+  	bottom: 100%;
+  	left: 50%;
+  	border: solid transparent;
+  	content: "";
+  	height: 0;
+  	width: 0;
+  	position: absolute;
+  	pointer-events: none;
+  }
+
+  &:after {
+    border-color: transparent;
+  	border-bottom-color: $background-color;
+  	border-width: $arrow-size;
+  	margin-left: -$arrow-size;
+  }
+
+  &:before {
+  	border-color: transparent;
+  	border-bottom-color: $border-color;
+  	border-width: $arrow-size + 1px;
+  	margin-left: -$arrow-size - 1px;
+  }
+}

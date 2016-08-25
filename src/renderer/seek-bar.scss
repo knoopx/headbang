@@ -1,0 +1,26 @@
+$height: 20px;
+$padding: 4px;
+$handle-height: $height - $padding * 2;
+
+.input {
+  flex: 1;
+  -webkit-app-region: no-drag;
+  -webkit-appearance: none !important;
+  border-radius: $handle-height + $padding;
+  height: $height;
+  outline: none;
+  border: 1px solid #dddddd;
+  box-shadow: 0 0.5px 0 rgba(0, 0, 0, 0.15), 0 -0.5px 0 rgba(0, 0, 0, 0.15), 0.5px 0 0 rgba(0, 0, 0, 0.15), -0.5px 0 0 rgba(0, 0, 0, 0.15), 0 1px 1px rgba(0, 0, 0, 0.15);
+
+  &::-webkit-slider-runnable-track {
+    padding: 0 $padding;
+  }
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    width: $handle-height * 2;
+    height: $handle-height;
+    border-radius: $handle-height;
+    background-color: #231f20;
+  }
+}

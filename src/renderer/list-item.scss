@@ -1,0 +1,27 @@
+.default {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  border-bottom: 1px solid #dddddd;
+  padding: 8px 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &:first-child {
+    border-top: 1px solid transparent;
+  }
+}
+
+.active {
+  color: white;
+  background-color: #3187e1;
+  border-bottom: 1px solid transparent;
+
+  .default + & {
+    border-bottom: 1px solid transparent;
+  }
+
+  .textMuted {
+    color: rgba(255, 255, 255, 0.6);
+  }
+}

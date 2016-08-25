@@ -1,0 +1,53 @@
+$fa-font-path: "../../node_modules/font-awesome/fonts";
+@import "~font-awesome/scss/font-awesome";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/variables";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/mixins";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/normalize";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/scaffolding";
+
+body {
+  height: 100vh;
+  width: 100vw;
+}
+
+@media screen and (max-width: $screen-xs-max) {
+  body {
+    width: 200vw;
+  }
+}
+
+body, #root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+* {
+  user-select: none;
+
+  &:active, &:hover {
+    cursor: default;
+  }
+
+  &:focus {
+    outline-color: transparent;
+    outline-style: none;
+    outline: none;
+  }
+}
+
+input[type='text'] {
+  cursor: text;
+
+  &:hover, &:active {
+    cursor: text;
+  }
+}
+
+input[type='range'] {
+  cursor: pointer;
+
+  &:hover, &:active {
+    cursor: pointer;
+  }
+}

@@ -1,27 +1,36 @@
 {
   "parser": "babel-eslint",
-  "extends": "airbnb",
-  "env": {
-    "browser": true,
-    "mocha": true,
-    "node": true
-  },
-  "rules": {
-    "semi": 0,
-    "max-len": 0,
-    "consistent-return": 0,
-    "comma-dangle": 0,
-    "no-use-before-define": 0,
-    "object-curly-spacing": 0,
-    "import/no-unresolved": [2, { ignore: ['electron'] }],
-    "react/prefer-es6-class": 0,
-    "react/prefer-stateless-function": 0,
-  },
   "plugins": [
     "import",
-    "react"
+    "lodash-fp"
   ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:lodash-fp/recommended"
+  ],
+  "env": {
+    "browser": false,
+    "node": true,
+    "es6": true
+  },
+  "rules": {
+    "semi": ["warn", "never"],
+    "comma-dangle": ["warn", "never"],
+    "newline-per-chained-call": ["warn"],
+    "object-shorthand": ["warn", "always"],
+    "object-curly-spacing": ["warn", "never"],
+    "array-bracket-spacing": ["warn", "never"],
+    "indent": ["warn", 2, {SwitchCase: 1, VariableDeclarator: 1, outerIIFEBody: 1}],
+    "prefer-const": ["warn"],
+    "no-console": ["off"],
+    "quotes": ["warn", "single"],
+    "no-else-return": ["warn"]
+  },
   "settings": {
-    "import/resolver": "webpack"
+    "import/resolver": {
+      "webpack": {
+        "config": 'webpack.renderer.development.js'
+      }
+    }
   }
 }
